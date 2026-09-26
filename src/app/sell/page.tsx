@@ -133,7 +133,7 @@ export default function SellPage() {
         </div>
       </header>
 
-      <div className="mx-auto max-w-[720px] px-4 py-8">
+      <div className="mx-auto max-w-[720px] px-3 sm:px-4 py-6 sm:py-8">
         {!loading && !user ? (
           <div className="rounded-2xl border p-4 mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3" style={{ borderColor: "#FCA5A5", background: "#FFF1F2" }}>
             <div className="text-sm text-[#7F1D1D]"><b>Log in required</b> — only registered users can create tickets. My Tickets is private.</div>
@@ -145,10 +145,10 @@ export default function SellPage() {
             <div className="text-[12px] font-black tracking-[0.8px]" style={{ color: TEAL }}>TICKET CREATED — SHARE THIS LINK</div>
             <div className="mt-2 text-[14px] font-bold break-all text-[#0A0E14]">{shareUrl}</div>
             <div className="mt-1 text-[12px] text-[#6B7280]">Receipt: <b>{result.code}</b> · Anyone with the link sees ticket design + details + bank transfer payment.</div>
-            <div className="mt-4 flex flex-wrap gap-2">
-              <button onClick={copyLink} className="rounded-full px-5 py-2.5 text-sm font-bold text-white" style={{ background: TEAL }}>Copy link</button>
-              <Link href={shareUrl} className="rounded-full border bg-white px-5 py-2.5 text-sm font-bold" style={{ borderColor: BORDER }}>Open preview →</Link>
-              <button onClick={() => setResult(null)} className="rounded-full border bg-white px-5 py-2.5 text-sm font-bold" style={{ borderColor: BORDER }}>Create another</button>
+            <div className="mt-4 flex flex-col sm:flex-row gap-2">
+              <button onClick={copyLink} className="rounded-full px-5 py-3 sm:py-2.5 text-sm font-bold text-white text-center justify-center" style={{ background: TEAL }}>Copy link</button>
+              <Link href={shareUrl} className="rounded-full border bg-white px-5 py-3 sm:py-2.5 text-sm font-bold text-center justify-center" style={{ borderColor: BORDER }}>Open preview →</Link>
+              <button onClick={() => setResult(null)} className="rounded-full border bg-white px-5 py-3 sm:py-2.5 text-sm font-bold text-center justify-center" style={{ borderColor: BORDER }}>Create another</button>
             </div>
             {previewUrl ? <img src={previewUrl} alt="preview" className="mt-4 w-full h-40 object-cover rounded-xl border" style={{ borderColor: BORDER }} /> : null}
           </div>
@@ -161,31 +161,31 @@ export default function SellPage() {
         {error ? <div className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div> : null}
 
         <div className="mt-6 grid gap-3">
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <Field label="Artist Name" value={artistName} onChange={setArtistName} />
             <Field label="Event Name" value={eventName} onChange={setEventName} />
           </div>
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <Field label="Section" value={section} onChange={setSection} />
             <Field label="Row" value={row} onChange={setRow} />
           </div>
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <Field label="Seat" value={seat} onChange={setSeat} />
             <Field label="date" value={date} onChange={setDate} placeholder="YYYY-MM-DD" />
           </div>
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <Field label="Location" value={location} onChange={setLocation} />
             <Field label="time" value={time} onChange={setTime} placeholder="19:00" />
           </div>
 
-          <div className="flex justify-center">
-            <label className="w-[58%] grid gap-1">
+          <div className="flex justify-center px-0">
+            <label className="w-full sm:w-[58%] grid gap-1">
               <span className="text-[10px] font-semibold text-[#6B7280]">Address</span>
               <input value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Address" className="border rounded-[10px] px-3 h-[42px] text-[13px] outline-none bg-[#F8FAFC] focus:bg-white focus:border-[#00C2A8]" style={{ borderColor: BORDER }} />
             </label>
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <Field label="Ticket Type" value={ticketType} onChange={setTicketType} />
             <Field label="level" value={level} onChange={setLevel} />
           </div>
@@ -217,17 +217,17 @@ export default function SellPage() {
 
           <label className="grid gap-1">
             <span className="text-[10px] font-semibold text-[#6B7280]">Upload photo (ticket image)</span>
-            <input type="file" accept="image/*" onChange={(e) => onFile(e.target.files?.[0] || null)} className="border rounded-[10px] px-3 py-2 text-[13px] bg-white file:mr-3 file:rounded-full file:border-0 file:bg-[#00C2A8] file:text-white file:px-4 file:py-1 file:text-sm file:font-bold" style={{ borderColor: BORDER }} />
+            <input type="file" accept="image/*" onChange={(e) => onFile(e.target.files?.[0] || null)} className="border rounded-[10px] px-3 py-2 text-[13px] bg-white min-w-0 w-full file:mr-3 file:rounded-full file:border-0 file:bg-[#00C2A8] file:text-white file:px-4 file:py-1 file:text-sm file:font-bold" style={{ borderColor: BORDER }} />
           </label>
 
           {previewUrl ? <div className="h-36 rounded-[10px] overflow-hidden border" style={{ borderColor: BORDER }}><img src={previewUrl} alt="preview" className="w-full h-full object-cover" /></div> : null}
 
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <Field label="City" value={city} onChange={setCity} placeholder="City (optional)" />
             <Field label="Price ($)" value={price} onChange={setPrice} placeholder="0 for free" type="text" />
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <Field label="Your name" value={sellerName} onChange={setSellerName} placeholder="Seller name (optional)" />
             <Field label="Your email" value={sellerEmail} onChange={setSellerEmail} placeholder="you@gmail.com (optional)" />
           </div>

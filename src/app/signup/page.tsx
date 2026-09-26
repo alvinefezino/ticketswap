@@ -31,14 +31,14 @@ export default function SignupPage() {
   return (
     <div className="min-h-screen bg-white">
       <header className="sticky top-0 z-40 bg-white border-b" style={{ borderColor: BORDER }}>
-        <div className="mx-auto max-w-[960px] px-4 h-[64px] flex items-center justify-between">
+        <div className="mx-auto max-w-[960px] px-3 sm:px-4 h-[56px] sm:h-[64px] flex items-center justify-between">
           <Link href="/" className="font-black text-[20px] tracking-[-0.6px]" style={{ color: BLACK }}>
             ticketswap<span className="w-1.5 h-1.5 rounded-full inline-block ml-0.5" style={{ background: TEAL }} />
           </Link>
           <Link href="/login" className="text-[13px] font-bold hover:underline">Log in</Link>
         </div>
       </header>
-      <div className="mx-auto max-w-[480px] px-4 py-14">
+      <div className="mx-auto max-w-[480px] px-4 py-8 sm:py-14">
         <h1 className="text-2xl font-black tracking-[-0.6px]">Create account</h1>
         <p className="mt-2 text-[13px] text-[#6B7280]">Sign up to create tickets and access My Tickets.</p>
         {done ? (

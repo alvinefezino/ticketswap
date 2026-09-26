@@ -52,7 +52,7 @@ export default function MyTicketsPage(){
   return (
     <div className="min-h-screen bg-white">
       <header className="sticky top-0 z-40 bg-white border-b" style={{borderColor:BORDER}}>
-        <div className="mx-auto max-w-[1280px] px-4 h-[64px] flex items-center justify-between">
+        <div className="mx-auto max-w-[1280px] px-3 sm:px-4 h-[56px] sm:h-[64px] flex items-center justify-between gap-2">
           <Link href="/" className="font-black text-[20px] tracking-[-0.6px]" style={{color:BLACK}}>ticketswap<span className="w-1.5 h-1.5 rounded-full inline-block ml-0.5" style={{background:TEAL}}/></Link>
           <div className="flex items-center gap-3">
             <span className="hidden sm:inline text-[12px] text-[#6B7280]">{user?.email}</span>
@@ -61,7 +61,7 @@ export default function MyTicketsPage(){
           </div>
         </div>
       </header>
-      <div className="mx-auto max-w-[960px] px-4 py-8">
+      <div className="mx-auto max-w-[960px] px-3 sm:px-4 py-6 sm:py-8">
         <h1 className="text-2xl font-black tracking-[-0.6px]">My Tickets</h1>
         <p className="mt-1 text-[13px] text-[#6B7280]">Only you can see these — registered users only. Share the link to let anyone view the preview + pay by bank transfer.</p>
         {err ? <div className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{err}</div> : null}
@@ -72,7 +72,7 @@ export default function MyTicketsPage(){
             <Link href="/sell" className="mt-4 inline-flex rounded-full px-6 py-3 text-sm font-bold text-white" style={{background:TEAL}}>Generate Ticket</Link>
           </div>
         ) : (
-          <div className="mt-6 grid sm:grid-cols-2 gap-4">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             {rows.map(r=>(
               <Link key={r.receipt_code} href={`/t/${encodeURIComponent(r.receipt_code)}`} className="rounded-2xl overflow-hidden border bg-white hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] transition" style={{borderColor:BORDER}}>
                 {r.image_url ? <img src={r.image_url} alt="" className="w-full h-36 object-cover" /> : <div className="w-full h-20 grid place-items-center bg-[#F5F7F9] text-xs text-[#9CA3AF]">No image</div>}

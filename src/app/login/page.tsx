@@ -30,14 +30,14 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-white">
       <header className="sticky top-0 z-40 bg-white border-b" style={{ borderColor: BORDER }}>
-        <div className="mx-auto max-w-[960px] px-4 h-[64px] flex items-center justify-between">
+        <div className="mx-auto max-w-[960px] px-3 sm:px-4 h-[56px] sm:h-[64px] flex items-center justify-between">
           <Link href="/" className="font-black text-[20px] tracking-[-0.6px]" style={{ color: BLACK }}>
             ticketswap<span className="w-1.5 h-1.5 rounded-full inline-block ml-0.5" style={{ background: TEAL }} />
           </Link>
           <Link href="/" className="text-[13px] font-bold hover:underline">Back to discover</Link>
         </div>
       </header>
-      <div className="mx-auto max-w-[480px] px-4 py-14">
+      <div className="mx-auto max-w-[480px] px-4 py-8 sm:py-14">
         <h1 className="text-2xl font-black tracking-[-0.6px]">Log in</h1>
         <p className="mt-2 text-[13px] text-[#6B7280]">My Tickets is only for registered users — log in to create tickets and see yours.</p>
         {error ? <div className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div> : null}

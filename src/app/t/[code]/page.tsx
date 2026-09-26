@@ -68,7 +68,7 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   return (
     <div className="min-h-screen bg-[#F5F7F9]">
       <header className="sticky top-0 z-40 bg-white border-b" style={{ borderColor: BORDER }}>
-        <div className="mx-auto max-w-[960px] px-4 h-[64px] flex items-center justify-between">
+        <div className="mx-auto max-w-[960px] px-3 sm:px-4 h-[56px] sm:h-[64px] flex items-center justify-between gap-2">
           <Link href="/" className="font-black text-[20px] tracking-[-0.6px]" style={{ color: BLACK }}>ticketswap<span className="w-1.5 h-1.5 rounded-full inline-block ml-0.5" style={{ background: TEAL }} /></Link>
           <div className="flex gap-2">
             <button onClick={() => copy(url)} className="hidden sm:inline rounded-full border bg-white px-4 py-2 text-[12px] font-bold" style={{ borderColor: BORDER }}>Copy link</button>
@@ -77,17 +77,17 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
         </div>
       </header>
 
-      <div className="mx-auto max-w-[720px] px-4 py-6">
+      <div className="mx-auto max-w-[720px] px-3 sm:px-4 py-4 sm:py-6">
         {/* Share bar */}
-        <div className="rounded-2xl border bg-white p-4 flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between" style={{ borderColor: BORDER }}>
+        <div className="rounded-2xl border bg-white p-3 sm:p-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between" style={{ borderColor: BORDER }}>
           <div>
-            <div className="text-[11px] font-black tracking-[0.8px]" style={{ color: TEAL }}>SHAREABLE LINK — SEND TO BUYER</div>
-            <div className="text-[12px] font-mono break-all text-[#0A0E14] mt-1">{url}</div>
+            <div className="text-[10px] sm:text-[11px] font-black tracking-[0.8px]" style={{ color: TEAL }}>SHAREABLE LINK — SEND TO BUYER</div>
+            <div className="text-[11px] sm:text-[12px] font-mono break-all text-[#0A0E14] mt-1">{url}</div>
             <div className="text-[11px] text-[#6B7280] mt-1">Receipt: <b>{ticket.receipt_code}</b> · Anyone with this link sees this preview.</div>
           </div>
-          <div className="flex gap-2 shrink-0">
-            <button onClick={() => copy(url)} className="rounded-full px-4 py-2 text-sm font-bold text-white" style={{ background: TEAL }}>Copy link</button>
-            <button onClick={() => { if (navigator.share) navigator.share({ title: ticket.title, url }).catch(()=>{}); else copy(url); }} className="rounded-full border bg-white px-4 py-2 text-sm font-bold" style={{ borderColor: BORDER }}>Share</button>
+          <div className="flex gap-2 shrink-0 w-full sm:w-auto">
+            <button onClick={() => copy(url)} className="flex-1 sm:flex-none rounded-full px-4 py-2.5 text-sm font-bold text-white" style={{ background: TEAL }}>Copy link</button>
+            <button onClick={() => { if (navigator.share) navigator.share({ title: ticket.title, url }).catch(()=>{}); else copy(url); }} className="flex-1 sm:flex-none rounded-full border bg-white px-4 py-2.5 text-sm font-bold" style={{ borderColor: BORDER }}>Share</button>
           </div>
         </div>
 
@@ -95,7 +95,7 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
         <div className="mt-6 rounded-2xl overflow-hidden border bg-white" style={{ borderColor: BORDER }}>
           {ticket.image_url ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={ticket.image_url} alt="ticket" className="w-full h-[220px] object-cover" />
+            <img src={ticket.image_url} alt="ticket" className="w-full h-[190px] sm:h-[220px] object-cover" />
           ) : <div className="w-full h-28 grid place-items-center bg-[#F5F7F9] text-[#9CA3AF] text-sm">No image</div>}
           <div className="p-5">
             <div className="flex gap-2 flex-wrap">
@@ -114,7 +114,7 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
             {ticket.address ? <div className="mt-2 text-[12px] text-[#6B7280]">{ticket.address}</div> : null}
           </div>
           {/* perforated stub */}
-          <div className="border-t border-dashed flex flex-col sm:flex-row gap-4 p-4 items-center bg-[#F8FAFC]" style={{ borderColor: BORDER }}>
+          <div className="border-t border-dashed flex flex-col sm:flex-row gap-3 sm:gap-4 p-3 sm:p-4 items-center bg-[#F8FAFC]" style={{ borderColor: BORDER }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={qrUrl} alt="QR" className="w-28 h-28 bg-white rounded-xl border p-2" style={{ borderColor: BORDER }} />
             <div className="flex-1 text-center sm:text-left">
@@ -172,7 +172,7 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
             <button onClick={() => copy(`$${total.toLocaleString()} — Ref: ${ticket.receipt_code}`)} className="rounded-full px-4 py-2 text-sm font-bold text-white shrink-0" style={{ background: TEAL }}>Copy amount + ref</button>
           </div>
 
-          <div className="mt-4 grid sm:grid-cols-2 gap-3 text-[13px]">
+          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-[13px]">
             {[
               { k: "Bank Name", v: "Example Bank (replace with seller bank)" },
               { k: "Account Holder", v: ticket.seller_name || "Seller — add name in form" },
@@ -200,7 +200,7 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
             </ol>
           </div>
 
-          <div className="mt-4 flex gap-2">
+          <div className="mt-4 flex flex-col sm:flex-row gap-2">
             <button onClick={() => window.print()} className="flex-1 rounded-full border bg-white py-3 text-sm font-bold" style={{ borderColor: BORDER }}>Print ticket</button>
             <button onClick={() => copy(url)} className="flex-1 rounded-full py-3 text-sm font-bold text-white" style={{ background: BLACK }}>Copy link</button>
           </div>

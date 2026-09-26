@@ -4,12 +4,12 @@ export default function HowItWorks(){
   return (
     <div className="min-h-screen bg-white">
       <header className="sticky top-0 z-40 bg-white border-b" style={{borderColor:BORDER}}>
-        <div className="mx-auto max-w-[960px] px-4 h-[64px] flex items-center justify-between">
+        <div className="mx-auto max-w-[960px] px-3 sm:px-4 h-[56px] sm:h-[64px] flex items-center justify-between">
           <Link href="/" className="font-black text-[20px] tracking-[-0.6px]">ticketswap<span className="w-1.5 h-1.5 rounded-full inline-block ml-0.5" style={{background:TEAL}}/></Link>
           <Link href="/sell" className="rounded-full px-5 py-2 text-sm font-bold text-white" style={{background:TEAL}}>Sell your tickets</Link>
         </div>
       </header>
-      <div className="mx-auto max-w-[960px] px-4 py-10">
+      <div className="mx-auto max-w-[960px] px-3 sm:px-4 py-6 sm:py-10">
         <h1 className="text-3xl font-black tracking-[-0.8px]">How it works</h1>
         <p className="mt-2 text-[14px] text-[#6B7280]">Exact flow like ticketswap.com — Safe, convenient and fair. Prices capped at 20% above face value.</p>
         <div className="mt-8 grid md:grid-cols-3 gap-4">
