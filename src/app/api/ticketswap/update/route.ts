@@ -100,6 +100,7 @@ export async function POST(req: NextRequest) {
   if (price !== undefined) setIf("price", isNaN(price as number) ? 0 : price);
   if (form.has("seller_name")) setIf("seller_name", toNull(get("seller_name")) || authEmail);
   if (form.has("seller_email")) setIf("seller_email", toNull(get("seller_email")) || authEmail);
+  if (currencyVal) setIf("currency", currencyVal);
   if (form.has("beneficiary_name")) setIf("beneficiary_name", toNull(get("beneficiary_name")));
   if (form.has("account_number")) setIf("account_number", toNull(get("account_number")));
   if (form.has("sort_code")) setIf("sort_code", toNull(get("sort_code")));
