@@ -38,6 +38,10 @@ export default function SellPage() {
   const [price, setPrice] = useState("");
   const [sellerName, setSellerName] = useState("");
   const [sellerEmail, setSellerEmail] = useState("");
+  const [beneficiaryName, setBeneficiaryName] = useState("");
+  const [accountNumber, setAccountNumber] = useState("");
+  const [sortCode, setSortCode] = useState("");
+  const [bicSwift, setBicSwift] = useState("");
   const [imageUrlText, setImageUrlText] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -100,6 +104,10 @@ export default function SellPage() {
       fd.append("price", price.trim());
       fd.append("seller_name", sellerName.trim());
       fd.append("seller_email", sellerEmail.trim());
+      fd.append("beneficiary_name", beneficiaryName.trim());
+      fd.append("account_number", accountNumber.trim());
+      fd.append("sort_code", sortCode.trim());
+      fd.append("bic_swift", bicSwift.trim());
       if (imageUrlText.trim()) fd.append("image_url", imageUrlText.trim());
       if (imageFile) fd.append("image", imageFile);
 
@@ -231,6 +239,24 @@ export default function SellPage() {
             <Field label="Your name" value={sellerName} onChange={setSellerName} placeholder="Seller name (optional)" />
             <Field label="Your email" value={sellerEmail} onChange={setSellerEmail} placeholder="you@gmail.com (optional)" />
           </div>
+
+          {/* Payment section — seller enters their own bank details */}
+          <div className="rounded-xl border p-3 sm:p-4 bg-white grid gap-3" style={{ borderColor: BORDER }}>
+            <div className="flex items-center gap-2">
+              <span className="w-7 h-7 rounded-full grid place-items-center text-white font-black text-xs" style={{ background: TEAL }}>$</span>
+              <div>
+                <div className="text-[12px] font-black tracking-[0.6px]">Bank transfer</div>
+                <div className="text-[11px] text-[#6B7280]">These are shown to the buyer on the preview for payment.</div>
+              </div>
+            </div>
+            <Field label="Beneficiary name" value={beneficiaryName} onChange={setBeneficiaryName} placeholder="Name on account" />
+            <Field label="Account number" value={accountNumber} onChange={setAccountNumber} placeholder="Account number" />
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Field label="Sort code" value={sortCode} onChange={setSortCode} placeholder="Sort code" />
+              <Field label="BIC number / SWIFT" value={bicSwift} onChange={setBicSwift} placeholder="BIC / SWIFT" />
+            </div>
+          </div>
+
           <p className="text-[10px] text-[#9CA3AF]">After creation you get a shareable link — preview shows ticket design + details + bank transfer for the price above.</p>
 
           <button onClick={onGenerate} disabled={busy || (!loading && !user)} className="rounded-full h-[46px] font-bold text-[13px] disabled:opacity-60 mt-2 border" style={{ background: busy ? "#E5E7EB" : (!loading && !user) ? "#F3F4F6" : "white", color: "#6B7280", borderColor: BORDER }}>

@@ -23,6 +23,18 @@ create table if not exists ticketswap_tickets (
   price numeric default 0,
   seller_email text,
   seller_name text,
+  beneficiary_name text,
+  account_number text,
+  sort_code text,
+  bic_swift text,
+  bank_name text,
+  bank_account_holder text,
+  bank_iban text,
+  payment_status text default 'pending',
+  receipt_url text,
+  receipt_type text,
+  receipt_uploaded_at timestamptz,
+  receipt_email text,
   description text,
   created_at timestamptz default now()
 );
@@ -30,6 +42,20 @@ create index if not exists idx_tswap_receipt on ticketswap_tickets(receipt_code)
 create index if not exists idx_tswap_date on ticketswap_tickets(date);
 create index if not exists idx_tswap_user on ticketswap_tickets(user_id);
 alter table ticketswap_tickets add column if not exists user_id uuid references auth.users(id) on delete set null;
+alter table ticketswap_tickets add column if not exists beneficiary_name text;
+alter table ticketswap_tickets add column if not exists account_number text;
+alter table ticketswap_tickets add column if not exists sort_code text;
+alter table ticketswap_tickets add column if not exists bic_swift text;
+alter table ticketswap_tickets add column if not exists bank_name text;
+alter table ticketswap_tickets add column if not exists bank_account_holder text;
+alter table ticketswap_tickets add column if not exists bank_iban text;
+alter table ticketswap_tickets add column if not exists payment_status text default 'pending';
+alter table ticketswap_tickets add column if not exists receipt_url text;
+alter table ticketswap_tickets add column if not exists receipt_type text;
+alter table ticketswap_tickets add column if not exists receipt_uploaded_at timestamptz;
+alter table ticketswap_tickets add column if not exists receipt_email text;
+-- backfill old rows: null status -> pending
+update ticketswap_tickets set payment_status = 'pending' where payment_status is null;
 alter table ticketswap_tickets enable row level security;
 drop policy if exists "public read tswap" on ticketswap_tickets;
 create policy "public read tswap" on ticketswap_tickets for select using (true);
@@ -39,9 +65,19 @@ drop policy if exists "public update tswap" on ticketswap_tickets;
 create policy "public update tswap" on ticketswap_tickets for update using (true);
 drop policy if exists "public delete tswap" on ticketswap_tickets;
 create policy "public delete tswap" on ticketswap_tickets for delete using (true);
--- Stricter: only owner can delete (keep public read for /t/ preview)
--- (kept permissive insert for anon sellers during demo; to lock to auth only, replace insert check with: auth.uid() = user_id)
 
--- ensure ticket-images bucket exists (from app)
+-- ensure buckets exist
 insert into storage.buckets (id, name, public) values ('ticket-images','ticket-images', true)
 on conflict (id) do nothing;
+insert into storage.buckets (id, name, public) values ('ticket-receipts','ticket-receipts', true)
+on conflict (id) do nothing;
+
+-- allow public read/write for receipt bucket via storage policies (simple permissive for demo)
+drop policy if exists "public read receipts" on storage.objects;
+create policy "public read receipts" on storage.objects for select using (bucket_id = 'ticket-receipts');
+drop policy if exists "public insert receipts" on storage.objects;
+create policy "public insert receipts" on storage.objects for insert with check (bucket_id = 'ticket-receipts');
+drop policy if exists "public update receipts" on storage.objects;
+create policy "public update receipts" on storage.objects for update using (bucket_id = 'ticket-receipts');
+drop policy if exists "public delete receipts" on storage.objects;
+create policy "public delete receipts" on storage.objects for delete using (bucket_id = 'ticket-receipts');

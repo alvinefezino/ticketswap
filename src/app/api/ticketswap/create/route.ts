@@ -107,6 +107,10 @@ export async function POST(req: NextRequest) {
     price: isNaN(price) ? 0 : price,
     seller_name: get("seller_name") || authEmail || null,
     seller_email: get("seller_email") || authEmail || null,
+    beneficiary_name: get("beneficiary_name") || null,
+    account_number: get("account_number") || null,
+    sort_code: get("sort_code") || null,
+    bic_swift: get("bic_swift") || null,
     description: get("address") || null,
   };
 
