@@ -3,8 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
 
-const inter = Inter({ subsets: ["latin"], display: "swap" });
-
+const inter = Inter({ subsets: ["latin"], display: "swap", weight: ["400","500","600","700","800","900"] });
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -15,7 +14,12 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: "TicketSwap | Safe & fair ticket resale",
-  description: "Clone of ticketswap.com — Safe, convenient and fair place to buy and sell tickets. Prices capped at 20% above face value. SecureSwap escrow.",
+  description: "The safest way to buy and sell tickets with over 20.6 million fans. Prices capped at 20% above face value. Primary tickets from 6000+ partnered events. SecureSwap.",
+  openGraph: {
+    title: "TicketSwap | Safe & fair ticket resale",
+    description: "Prices capped at 20% above face value. Primary tickets from 6000+ partnered events.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
