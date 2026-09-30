@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
@@ -42,16 +42,21 @@ export default function EditPage({params}:{params:{code:string}}){
   const [busy,setBusy]=useState(false);
   const [error,setError]=useState<string|null>(null);
   const [ok,setOk]=useState(false);
+  const loadedForRef = useRef<string|null>(null);
 
   useEffect(()=>{
     if(authLoading) return;
     if(!user){ router.replace("/login"); return; }
+    const key = `${code}__${user.id}`;
+    if(loadedForRef.current === key) return;
+    let cancelled=false;
     (async()=>{
       try{
         const {createClient}=await import("@supabase/supabase-js");
         const url=process.env.NEXT_PUBLIC_SUPABASE_URL||""; const anon=process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY||"";
         const supa=createClient(url,anon);
         const {data,error}=await supa.from("ticketswap_tickets").select("*").eq("receipt_code",code).maybeSingle();
+        if(cancelled) return;
         if(error) throw error;
         if(!data){ setNotFound(true); setFetching(false); return; }
         if((data as any).user_id && (data as any).user_id!==user.id){ setNotOwner(true); setFetching(false); return; }
@@ -79,10 +84,12 @@ export default function EditPage({params}:{params:{code:string}}){
         if((data as any).image_url) setPreviewUrl((data as any).image_url);
         const s=Array.isArray((data as any).seats)?(data as any).seats:[];
         if(s.length) setSeats(s);
-      }catch(e:any){ setError(e.message||String(e)); }
-      finally{ setFetching(false); }
+        loadedForRef.current = key;
+      }catch(e:any){ if(!cancelled) setError(e.message||String(e)); }
+      finally{ if(!cancelled) setFetching(false); }
     })();
-  },[user,authLoading,code]);
+    return ()=>{ cancelled=true; };
+  },[user?.id, authLoading, code]);
 
   const syncSeats=(n:number)=>{ const c=Math.max(1,Math.min(10,n||1)); setSeats(prev=>{ const next=[...prev]; while(next.length<c) next.push({section:"",row:"",seat:""}); while(next.length>c) next.pop(); return next; }); };
   const onNumChange=(v:string)=>{ const cleaned=v.replace(/[^0-9]/g,""); setNumberOfTickets(cleaned); const n=parseInt(cleaned||"1",10); if(!isNaN(n)) syncSeats(n); };

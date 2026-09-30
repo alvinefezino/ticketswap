@@ -163,7 +163,7 @@ function Footer() {
         <div className="col-span-2 md:col-span-1">
           <div className="flex items-center gap-1 font-black text-[18px] tracking-[-0.6px]">ticketswap<span className="w-1.5 h-1.5 rounded-full mt-1" style={{ background: TEAL }} /></div>
           <p className="mt-3 text-[12px] leading-5 text-[#6B7280]">Clone of ticketswap.com — Safe, convenient and fair. Prices capped at 20% above face value. SecureSwap escrow until Accept.</p>
-          <p className="mt-3 text-[11px] text-[#9CA3AF]">Not affiliated with TicketSwap B.V. · Demo.</p>
+
         </div>
         <div>
           <div className="font-bold text-[12px] tracking-[0.6px]">DISCOVER</div>
@@ -182,7 +182,7 @@ function Footer() {
           <Link href="/sell" className="mt-3 inline-flex w-full sm:w-auto justify-center rounded-full px-5 py-3 text-sm font-bold text-white text-center" style={{ background: TEAL }}>Sell your tickets</Link>
         </div>
       </div>
-      <div className="border-t py-4 text-center text-[11px] text-[#9CA3AF]" style={{ borderColor: BORDER }}>© {new Date().getFullYear()} ticketswap clone · SecureSwap</div>
+      <div className="border-t py-4 text-center text-[11px] text-[#9CA3AF]" style={{ borderColor: BORDER }}>© {new Date().getFullYear()} TicketSwap</div>
     </footer>
   );
 }
