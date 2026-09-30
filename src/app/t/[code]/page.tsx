@@ -2,6 +2,7 @@
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
+import { formatPrice, currencyForLocation } from "@/lib/currency";
 
 const TEAL = "#00C2A8";
 const BORDER = "#E5E7EB";
@@ -14,6 +15,7 @@ type Ticket = {
   level: string | null; number_of_tickets: number; seats: any[]; image_url: string | null; price: number | null;
   seller_name: string | null; seller_email: string | null;
   beneficiary_name: string | null; account_number: string | null; sort_code: string | null; bic_swift: string | null;
+  apple_pay_details: string | null; venmo_handle: string | null; zelle_details: string | null; cashapp_cashtag: string | null;
   payment_status: string | null; receipt_url: string | null; receipt_type: string | null; receipt_uploaded_at: string | null; receipt_email: string | null;
   created_at: string;
 };
@@ -32,6 +34,7 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   const [msg, setMsg] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [showPaymentCompleted, setShowPaymentCompleted] = useState(false);
+  const [openPay, setOpenPay] = useState<string | null>("bank");
   const fileRef = useRef<HTMLInputElement>(null);
 
   const load = async () => {
@@ -63,6 +66,9 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   const total = amount * qty;
   const seats: any[] = Array.isArray(ticket?.seats) ? ticket!.seats : [];
   const status = (ticket as any)?.payment_status || "pending";
+  const cur = ticket ? currencyForLocation(ticket.city, ticket.location) : { code: "EUR", symbol: "€", locale: "nl-NL" };
+  const fmt = (n: number) => formatPrice(n, ticket?.city || null, ticket?.location || null);
+  const fmtSingle = ticket ? formatPrice(amount, ticket.city, ticket.location) : `€${amount.toLocaleString()}`;
   const isOwner = !!(user && ticket && (ticket as any).user_id && user.id === (ticket as any).user_id);
 
   const copy = async (t: string) => {
@@ -205,7 +211,7 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
         <div className="mt-4 rounded-2xl border bg-white p-4 sm:p-5 shadow-[0_2px_16px_rgba(0,0,0,0.04)]" style={{ borderColor: BORDER }}>
           <div className="flex items-center justify-between">
             <div className="text-[12px] font-black tracking-[0.8px]">TICKET DETAILS</div>
-            <span className="text-[11px] text-[#9CA3AF]">{total ? `$${total.toLocaleString()} total` : ""}</span>
+            <span className="text-[11px] text-[#9CA3AF]">{total ? `${fmt(total)} total` : ""}</span>
           </div>
           <div className="h-px bg-[#E5E7EB] my-3" />
           <div className="grid gap-2.5 text-[13px]">
@@ -237,8 +243,8 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
           <div className="flex items-start gap-3">
             <span className="w-9 h-9 rounded-full grid place-items-center text-white font-black text-sm shrink-0" style={{ background: TEAL }}>$</span>
             <div className="min-w-0">
-              <div className="text-[12px] font-black tracking-[0.7px]">PAYMENT \u2014 BANK TRANSFER ONLY</div>
-              <div className="text-[12px] text-[#6B7280] leading-snug">No gateway. Transfer to the seller below and upload proof.</div>
+              <div className="text-[12px] font-black tracking-[0.7px]">PAYMENT \u2014 CHOOSE A METHOD</div>
+              <div className="text-[12px] text-[#6B7280] leading-snug">Tap a logo to reveal details. Currency set by event location. Transfer + upload proof.</div>
             </div>
           </div>
 
@@ -246,37 +252,60 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
             <div className="flex items-start justify-between gap-3">
               <div>
                 <div className="text-[11px] font-bold tracking-[0.8px] text-[#0F766E]">AMOUNT TO TRANSFER</div>
-                <div className="text-[26px] font-black leading-none mt-1" style={{ color: BLACK }}>${total.toLocaleString()}</div>
-                <div className="text-[12px] text-[#6B7280] mt-1">{qty} \u00d7 ${amount.toLocaleString()} \u00b7 Reference <b className="font-mono">{ticket.receipt_code}</b></div>
+                <div className="text-[26px] font-black leading-none mt-1" style={{ color: BLACK }}>{fmt(total)}</div>
+                <div className="text-[12px] text-[#6B7280] mt-1">{qty} \u00d7 {fmtSingle} \u00b7 Reference <b className="font-mono">{ticket.receipt_code}</b></div>
               </div>
               <button onClick={() => copy(`${total} \u2014 Ref: ${ticket.receipt_code}`)} className="shrink-0 rounded-full px-4 py-2.5 text-[13px] font-bold text-white active:scale-[0.98] shadow-sm" style={{ background: TEAL }}>Copy</button>
             </div>
           </div>
 
-          <div className="mt-3 grid grid-cols-1 gap-2.5">
-            {[
-              { k: "Beneficiary", v: ticket.beneficiary_name || "\u2014", mono: false },
-              { k: "Account number", v: ticket.account_number || "\u2014", mono: true },
-              { k: "Sort code", v: ticket.sort_code || "\u2014", mono: true },
-              { k: "BIC / SWIFT", v: ticket.bic_swift || "\u2014", mono: true },
-              { k: "Reference", v: ticket.receipt_code, mono: true, hl: true },
-            ].map(r=> (
-              <div key={r.k} className={`rounded-xl border p-3 flex items-center justify-between gap-3 ${r.hl ? "bg-[#F0FDFB] border-[#CCFBF1]" : "bg-[#F8FAFC]"}`} style={{ borderColor: r.hl ? "#CCFBF1" : BORDER }}>
-                <div className="min-w-0">
-                  <div className="text-[10px] font-bold tracking-[0.6px] text-[#6B7280]">{r.k.toUpperCase()}</div>
-                  <div className={`font-bold break-all text-[13px] ${r.mono ? "font-mono" : ""}`}>{r.v}</div>
-                </div>
-                <button onClick={() => copy(String(r.v))} className="shrink-0 h-9 w-9 rounded-full border bg-white grid place-items-center active:scale-95" style={{ borderColor: BORDER }} aria-label={`Copy ${r.k}`}>
-                  <span className="text-[12px]">\u29C9</span>
-                </button>
-              </div>
-            ))}
+          <div className="mt-4">
+            <div className="flex items-center gap-2 text-[11px] font-black tracking-[0.7px] text-[#111827]"><span>PAYMENT METHODS</span><span className="font-normal text-[#6B7280]">— tap a logo · {cur.code} · {fmt(total)} total</span></div>
+            <div className="mt-2 grid gap-2">
+              {(() => {
+                const methods: any[] = [
+                  { id: "bank", label: "Bank transfer", icon: "🏦", bg: "#0A0E14", has: !!(ticket.beneficiary_name || ticket.account_number || ticket.sort_code || ticket.bic_swift), rows: [
+                    { k: "Beneficiary", v: ticket.beneficiary_name || "—" },
+                    { k: "Account number", v: ticket.account_number || "—", mono: true },
+                    { k: "Sort code", v: ticket.sort_code || "—", mono: true },
+                    { k: "BIC / SWIFT", v: ticket.bic_swift || "—", mono: true },
+                    { k: "Reference", v: ticket.receipt_code, mono: true, hl: true },
+                    { k: "Amount", v: fmt(total), hl: true },
+                  ]},
+                  { id: "apple", label: "Apple Pay", icon: "", bg: "#000000", has: !!(ticket as any).apple_pay_details, rows: [{ k: "Apple Pay", v: (ticket as any).apple_pay_details || "—" }, { k: "Reference", v: ticket.receipt_code, mono: true }, { k: "Amount", v: fmt(total) }] },
+                  { id: "venmo", label: "Venmo", icon: "V", bg: "#3D95CE", has: !!(ticket as any).venmo_handle, rows: [{ k: "Venmo", v: (ticket as any).venmo_handle || "—", mono: true }, { k: "Reference", v: ticket.receipt_code, mono: true }, { k: "Amount", v: fmt(total) }] },
+                  { id: "zelle", label: "Zelle", icon: "Z", bg: "#6D1ED4", has: !!(ticket as any).zelle_details, rows: [{ k: "Zelle", v: (ticket as any).zelle_details || "—" }, { k: "Reference", v: ticket.receipt_code, mono: true }, { k: "Amount", v: fmt(total) }] },
+                  { id: "cashapp", label: "Cash App", icon: "$", bg: "#00D632", has: !!(ticket as any).cashapp_cashtag, rows: [{ k: "Cash App", v: (ticket as any).cashapp_cashtag || "—", mono: true }, { k: "Reference", v: ticket.receipt_code, mono: true }, { k: "Amount", v: fmt(total) }] },
+                ];
+                return methods.map((m) => (
+                  <div key={m.id} className={`rounded-2xl border overflow-hidden ${m.has ? "bg-white" : "bg-[#F9FAFB] opacity-70"}`} style={{ borderColor: openPay === m.id ? TEAL : BORDER }}>
+                    <button onClick={() => setOpenPay(openPay === m.id ? null : m.id)} className="w-full flex items-center gap-3 px-3.5 py-3.5 text-left hover:bg-[#F9FAFB] transition">
+                      <span className="w-9 h-9 rounded-xl grid place-items-center text-white font-black text-[13px] shrink-0" style={{ background: m.bg }}>{m.icon}</span>
+                      <span className="text-[13px] font-black tracking-[-0.2px] flex-1">{m.label}</span>
+                      {!m.has ? <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-[#F3F4F6] text-[#6B7280]">Not set</span> : null}
+                      <span className={`w-7 h-7 rounded-full border grid place-items-center text-[12px] ${openPay === m.id ? "bg-[#F0FDFB]" : "bg-white"}`} style={{ borderColor: openPay === m.id ? "#CCFBF1" : BORDER }}>{openPay === m.id ? "−" : "+"}</span>
+                    </button>
+                    {openPay === m.id ? (
+                      <div className="px-3 pb-3 grid gap-1.5 border-t bg-[#FCFEFE]" style={{ borderColor: BORDER }}>
+                        {m.rows.map((r: any) => (
+                          <div key={r.k} className={`rounded-xl border p-3 flex items-center justify-between gap-3 ${r.hl ? "bg-[#F0FDFB] border-[#CCFBF1]" : "bg-white"}`} style={{ borderColor: r.hl ? "#CCFBF1" : BORDER }}>
+                            <div className="min-w-0"><div className="text-[10px] font-bold tracking-[0.6px] text-[#6B7280]">{r.k.toUpperCase()}</div><div className={`font-bold break-all text-[13px] ${r.mono ? "font-mono" : ""}`}>{r.v}</div></div>
+                            <button onClick={() => copy(String(r.v))} className="shrink-0 h-9 w-9 rounded-full border bg-white grid place-items-center active:scale-95" style={{ borderColor: BORDER }} aria-label={`Copy ${r.k}`}><span className="text-[12px]">⧉</span></button>
+                          </div>
+                        ))}
+                        {m.id !== "bank" && !m.has ? <div className="text-[11px] text-[#6B7280] px-1">Seller has not added {m.label} details for this ticket.</div> : null}
+                      </div>
+                    ) : null}
+                  </div>
+                ));
+              })()}
+            </div>
           </div>
 
           <div className="mt-3 rounded-xl p-3 flex gap-2.5 items-start" style={{ background: "#FFFBEB", border: "1px solid #FDE68A" }}>
             <span className="text-sm shrink-0">\uD83D\uDCA1</span>
             <ol className="text-[12px] leading-5 list-decimal pl-4" style={{ color: "#78350F" }}>
-              <li>Transfer <b>${total.toLocaleString()}</b> with Reference <b className="font-mono">{ticket.receipt_code}</b>.</li>
+              <li>Transfer <b>{fmt(total)}</b> with Reference <b className="font-mono">{ticket.receipt_code}</b>.</li>
               <li>Upload receipt below \u2014 seller confirms in their dashboard.</li>
               <li>Keep this link as your entry QR.</li>
             </ol>

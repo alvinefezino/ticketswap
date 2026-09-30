@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
+import { formatPrice } from "@/lib/currency";
 
 const TEAL = "#00C2A8";
 const TEAL_DARK = "#00A88F";
@@ -130,7 +131,7 @@ function EventCard({ ev }: { ev: typeof MOCK_EVENTS[0] }) {
       <div className="relative h-[156px] sm:h-[148px] overflow-hidden bg-[#F3F4F6] shrink-0">
         <img src={ev.image} alt={ev.title} className="w-full h-full object-cover group-hover:scale-[1.04] transition duration-500" />
         <span className="absolute left-2.5 top-2.5 rounded-full px-2.5 py-1 text-[10px] font-bold tracking-[0.5px] bg-white/95 backdrop-blur border shadow-sm" style={{ borderColor: "rgba(0,0,0,0.06)" }}>{ev.category.toUpperCase()}</span>
-        <span className="absolute right-2.5 bottom-2.5 rounded-full px-2.5 py-1 text-[11px] font-bold bg-[#0A0E14] text-white shadow-sm">From €{ev.price}</span>
+        <span className="absolute right-2.5 bottom-2.5 rounded-full px-2.5 py-1 text-[11px] font-bold bg-[#0A0E14] text-white shadow-sm">{formatPrice(ev.price, ev.city, ev.venue)}</span>
       </div>
       <div className="p-3.5">
         <div className="text-[11px] font-semibold text-[#6B7280] tracking-[0.2px]">{ev.date} · {ev.city}</div>

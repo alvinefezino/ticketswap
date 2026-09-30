@@ -42,6 +42,10 @@ export default function SellPage() {
   const [accountNumber, setAccountNumber] = useState("");
   const [sortCode, setSortCode] = useState("");
   const [bicSwift, setBicSwift] = useState("");
+  const [applePay, setApplePay] = useState("");
+  const [venmo, setVenmo] = useState("");
+  const [zelle, setZelle] = useState("");
+  const [cashapp, setCashapp] = useState("");
   const [imageUrlText, setImageUrlText] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -108,6 +112,10 @@ export default function SellPage() {
       fd.append("account_number", accountNumber.trim());
       fd.append("sort_code", sortCode.trim());
       fd.append("bic_swift", bicSwift.trim());
+      fd.append("apple_pay_details", applePay.trim());
+      fd.append("venmo_handle", venmo.trim());
+      fd.append("zelle_details", zelle.trim());
+      fd.append("cashapp_cashtag", cashapp.trim());
       if (imageUrlText.trim()) fd.append("image_url", imageUrlText.trim());
       if (imageFile) fd.append("image", imageFile);
 
@@ -152,7 +160,7 @@ export default function SellPage() {
           <div className="rounded-2xl border p-5 mb-6" style={{ borderColor: TEAL, background: "#F0FDFB" }}>
             <div className="text-[12px] font-black tracking-[0.8px]" style={{ color: TEAL }}>TICKET CREATED — SHARE THIS LINK</div>
             <div className="mt-2 text-[14px] font-bold break-all text-[#0A0E14]">{shareUrl}</div>
-            <div className="mt-1 text-[12px] text-[#6B7280]">Receipt: <b>{result.code}</b> · Anyone with the link sees ticket design + details + bank transfer payment.</div>
+            <div className="mt-1 text-[12px] text-[#6B7280]">Receipt: <b>{result.code}</b> · Anyone with the link sees ticket design + details + payment methods.</div>
             <div className="mt-4 flex flex-col sm:flex-row gap-2">
               <button onClick={copyLink} className="rounded-full px-5 py-3 sm:py-2.5 text-sm font-bold text-white text-center justify-center" style={{ background: TEAL }}>Copy link</button>
               <Link href={shareUrl} className="rounded-full border bg-white px-5 py-3 sm:py-2.5 text-sm font-bold text-center justify-center" style={{ borderColor: BORDER }}>Open preview →</Link>
@@ -231,8 +239,8 @@ export default function SellPage() {
           {previewUrl ? <div className="h-36 rounded-[10px] overflow-hidden border" style={{ borderColor: BORDER }}><img src={previewUrl} alt="preview" className="w-full h-full object-cover" /></div> : null}
 
           <div className="flex flex-col sm:flex-row gap-3">
-            <Field label="City" value={city} onChange={setCity} placeholder="City (optional)" />
-            <Field label="Price ($)" value={price} onChange={setPrice} placeholder="0 for free" type="text" />
+            <Field label="City" value={city} onChange={setCity} placeholder="City (optional) — sets currency" />
+            <Field label="Price" value={price} onChange={setPrice} placeholder="0 for free" type="text" />
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3">
@@ -240,29 +248,40 @@ export default function SellPage() {
             <Field label="Your email" value={sellerEmail} onChange={setSellerEmail} placeholder="you@gmail.com (optional)" />
           </div>
 
-          {/* Payment section — seller enters their own bank details */}
           <div className="rounded-xl border p-3 sm:p-4 bg-white grid gap-3" style={{ borderColor: BORDER }}>
             <div className="flex items-center gap-2">
               <span className="w-7 h-7 rounded-full grid place-items-center text-white font-black text-xs" style={{ background: TEAL }}>$</span>
               <div>
-                <div className="text-[12px] font-black tracking-[0.6px]">Bank transfer</div>
-                <div className="text-[11px] text-[#6B7280]">These are shown to the buyer on the preview for payment.</div>
+                <div className="text-[12px] font-black tracking-[0.6px]">Payment methods</div>
+                <div className="text-[11px] text-[#6B7280]">Fill any you want shown — buyer taps logo to reveal details. Currency auto by location/city.</div>
               </div>
             </div>
+            <div className="text-[11px] font-bold mt-1 flex items-center gap-2"><span className="w-6 h-6 rounded-full bg-[#0A0E14] text-white grid place-items-center text-[10px]">🏦</span> Bank transfer</div>
             <Field label="Beneficiary name" value={beneficiaryName} onChange={setBeneficiaryName} placeholder="Name on account" />
             <Field label="Account number" value={accountNumber} onChange={setAccountNumber} placeholder="Account number" />
             <div className="flex flex-col sm:flex-row gap-3">
               <Field label="Sort code" value={sortCode} onChange={setSortCode} placeholder="Sort code" />
               <Field label="BIC number / SWIFT" value={bicSwift} onChange={setBicSwift} placeholder="BIC / SWIFT" />
             </div>
+            <div className="h-px bg-[#E5E7EB]" />
+            <div className="grid gap-3">
+              <div className="flex items-center gap-2 text-[11px] font-bold"><span className="w-6 h-6 rounded-full bg-black text-white grid place-items-center text-[11px]"></span> Apple Pay <span className="text-[#9CA3AF] font-normal">— phone / email</span></div>
+              <Field label="Apple Pay details" value={applePay} onChange={setApplePay} placeholder="e.g. +44 7700 900000 or apple@pay.com" />
+              <div className="flex items-center gap-2 text-[11px] font-bold"><span className="w-6 h-6 rounded-full bg-[#3D95CE] text-white grid place-items-center text-[10px] font-black">V</span> Venmo</div>
+              <Field label="Venmo handle" value={venmo} onChange={setVenmo} placeholder="@username" />
+              <div className="flex items-center gap-2 text-[11px] font-bold"><span className="w-6 h-6 rounded-full bg-[#6D1ED4] text-white grid place-items-center text-[10px] font-black">Z</span> Zelle</div>
+              <Field label="Zelle details" value={zelle} onChange={setZelle} placeholder="email or phone for Zelle" />
+              <div className="flex items-center gap-2 text-[11px] font-bold"><span className="w-6 h-6 rounded-full bg-[#00D632] text-white grid place-items-center text-[10px] font-black">$</span> Cash App</div>
+              <Field label="Cash App $cashtag" value={cashapp} onChange={setCashapp} placeholder="$cashtag" />
+            </div>
           </div>
 
-          <p className="text-[10px] text-[#9CA3AF]">After creation you get a shareable link — preview shows ticket design + details + bank transfer for the price above.</p>
+          <p className="text-[10px] text-[#9CA3AF]">After creation you get a shareable link — preview shows ticket design + details + payment methods with logos (tap to expand).</p>
 
           <button onClick={onGenerate} disabled={busy || (!loading && !user)} className="rounded-full h-[46px] font-bold text-[13px] disabled:opacity-60 mt-2 border" style={{ background: busy ? "#E5E7EB" : (!loading && !user) ? "#F3F4F6" : "white", color: "#6B7280", borderColor: BORDER }}>
             {busy ? "Generating..." : "Generate Ticket"}
           </button>
-          <p className="text-[10px] text-center text-[#9CA3AF]">QR code + receipt link auto-generated. Amount for bank transfer = Price ($).</p>
+          <p className="text-[10px] text-center text-[#9CA3AF]">QR code + receipt link auto-generated. Amount = price × tickets in buyer currency.</p>
         </div>
       </div>
     </div>

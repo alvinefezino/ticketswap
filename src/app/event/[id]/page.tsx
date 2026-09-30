@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { formatPrice } from "@/lib/currency";
 const TEAL="#00C2A8"; const BORDER="#E5E7EB"; const BLACK="#0A0E14";
 
 const FALLBACK: Record<string, any> = {
@@ -42,7 +43,7 @@ export default function EventPage({ params }: { params: { id: string } }){
         <div className="lg:sticky lg:top-[80px] h-fit rounded-2xl border bg-white p-5" style={{borderColor:BORDER}}>
           <div className="text-[11px] font-bold tracking-[1px] text-[#6B7280]">TICKETS FROM</div>
           <div className="mt-1 flex items-baseline gap-2">
-            <span className="text-3xl font-black" style={{color:BLACK}}>€{ev.price}</span>
+            <span className="text-3xl font-black" style={{color:BLACK}}>{formatPrice(ev.price, ev.city, ev.venue)}</span>
             <span className="text-[12px] text-[#6B7280]">face value capped +20%</span>
           </div>
           <form action="/api/checkout" method="post" className="mt-5 grid gap-3">

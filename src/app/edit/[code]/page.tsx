@@ -35,6 +35,10 @@ export default function EditPage({params}:{params:{code:string}}){
   const [accountNumber,setAccountNumber]=useState("");
   const [sortCode,setSortCode]=useState("");
   const [bicSwift,setBicSwift]=useState("");
+  const [applePay,setApplePay]=useState("");
+  const [venmo,setVenmo]=useState("");
+  const [zelle,setZelle]=useState("");
+  const [cashapp,setCashapp]=useState("");
   const [imageUrlText,setImageUrlText]=useState("");
   const [imageFile,setImageFile]=useState<File|null>(null);
   const [previewUrl,setPreviewUrl]=useState<string|null>(null);
@@ -80,6 +84,10 @@ export default function EditPage({params}:{params:{code:string}}){
         setAccountNumber((data as any).account_number||"");
         setSortCode((data as any).sort_code||"");
         setBicSwift((data as any).bic_swift||"");
+        setApplePay((data as any).apple_pay_details||"");
+        setVenmo((data as any).venmo_handle||"");
+        setZelle((data as any).zelle_details||"");
+        setCashapp((data as any).cashapp_cashtag||"");
         setImageUrlText((data as any).image_url && !(data as any).image_url.startsWith("data:") ? (data as any).image_url : "");
         if((data as any).image_url) setPreviewUrl((data as any).image_url);
         const s=Array.isArray((data as any).seats)?(data as any).seats:[];
@@ -132,6 +140,10 @@ export default function EditPage({params}:{params:{code:string}}){
       fd.append("account_number",accountNumber.trim());
       fd.append("sort_code",sortCode.trim());
       fd.append("bic_swift",bicSwift.trim());
+      fd.append("apple_pay_details",applePay.trim());
+      fd.append("venmo_handle",venmo.trim());
+      fd.append("zelle_details",zelle.trim());
+      fd.append("cashapp_cashtag",cashapp.trim());
       if(imageUrlText.trim()) fd.append("image_url",imageUrlText.trim());
       if(imageFile) fd.append("image",imageFile);
       const r=await fetch("/api/ticketswap/update",{method:"POST",body:fd,headers:{Authorization:`Bearer ${token}`}});
@@ -182,6 +194,17 @@ export default function EditPage({params}:{params:{code:string}}){
             <Field label="Beneficiary name" value={beneficiaryName} onChange={setBeneficiaryName} placeholder="Name on account" />
             <Field label="Account number" value={accountNumber} onChange={setAccountNumber} placeholder="Account number" />
             <div className="flex flex-col sm:flex-row gap-3"><Field label="Sort code" value={sortCode} onChange={setSortCode} placeholder="Sort code" /><Field label="BIC number / SWIFT" value={bicSwift} onChange={setBicSwift} placeholder="BIC / SWIFT" /></div>
+            <div className="h-px bg-[#E5E7EB]" />
+            <div className="grid gap-3">
+              <div className="flex items-center gap-2 text-[11px] font-bold"><span className="w-6 h-6 rounded-full bg-black text-white grid place-items-center text-[11px]"></span> Apple Pay</div>
+              <Field label="Apple Pay details" value={applePay} onChange={setApplePay} placeholder="phone or email" />
+              <div className="flex items-center gap-2 text-[11px] font-bold"><span className="w-6 h-6 rounded-full bg-[#3D95CE] text-white grid place-items-center text-[10px] font-black">V</span> Venmo</div>
+              <Field label="Venmo handle" value={venmo} onChange={setVenmo} placeholder="@username" />
+              <div className="flex items-center gap-2 text-[11px] font-bold"><span className="w-6 h-6 rounded-full bg-[#6D1ED4] text-white grid place-items-center text-[10px] font-black">Z</span> Zelle</div>
+              <Field label="Zelle details" value={zelle} onChange={setZelle} placeholder="email or phone" />
+              <div className="flex items-center gap-2 text-[11px] font-bold"><span className="w-6 h-6 rounded-full bg-[#00D632] text-white grid place-items-center text-[10px] font-black">$</span> Cash App</div>
+              <Field label="Cash App $cashtag" value={cashapp} onChange={setCashapp} placeholder="$cashtag" />
+            </div>
           </div>
           <button onClick={onSave} disabled={busy} className="rounded-full h-[46px] font-bold text-[13px] disabled:opacity-60 mt-2 text-white" style={{background:busy?"#9CA3AF":TEAL}}>{busy?"Saving...":"Save changes"}</button>
           <p className="text-[10px] text-center text-[#9CA3AF]">After save, share the same /t/{code} link — buyer sees updated bank details + receipt status.</p>

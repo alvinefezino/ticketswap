@@ -112,6 +112,10 @@ export async function POST(req: NextRequest) {
   if (form.has("account_number")) setIf("account_number", toNull(get("account_number")));
   if (form.has("sort_code")) setIf("sort_code", toNull(get("sort_code")));
   if (form.has("bic_swift")) setIf("bic_swift", toNull(get("bic_swift")));
+  if (form.has("apple_pay_details")) setIf("apple_pay_details", toNull(get("apple_pay_details")));
+  if (form.has("venmo_handle")) setIf("venmo_handle", toNull(get("venmo_handle")));
+  if (form.has("zelle_details")) setIf("zelle_details", toNull(get("zelle_details")));
+  if (form.has("cashapp_cashtag")) setIf("cashapp_cashtag", toNull(get("cashapp_cashtag")));
   // legacy fallback
   if (form.has("bank_name")) setIf("bank_name", toNull(get("bank_name")));
   if (form.has("bank_account_holder")) setIf("bank_account_holder", toNull(get("bank_account_holder")));

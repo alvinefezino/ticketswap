@@ -111,6 +111,10 @@ export async function POST(req: NextRequest) {
     account_number: get("account_number") || null,
     sort_code: get("sort_code") || null,
     bic_swift: get("bic_swift") || null,
+    apple_pay_details: get("apple_pay_details") || null,
+    venmo_handle: get("venmo_handle") || null,
+    zelle_details: get("zelle_details") || null,
+    cashapp_cashtag: get("cashapp_cashtag") || null,
     description: get("address") || null,
   };
 

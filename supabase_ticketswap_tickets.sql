@@ -81,3 +81,10 @@ drop policy if exists "public update receipts" on storage.objects;
 create policy "public update receipts" on storage.objects for update using (bucket_id = 'ticket-receipts');
 drop policy if exists "public delete receipts" on storage.objects;
 create policy "public delete receipts" on storage.objects for delete using (bucket_id = 'ticket-receipts');
+
+-- Payment methods extra (Apple Pay, Venmo, Zelle, Cash App) - location-based currency uses city/location fields
+alter table if exists public.ticketswap_tickets add column if not exists apple_pay_details text;
+alter table if exists public.ticketswap_tickets add column if not exists venmo_handle text;
+alter table if exists public.ticketswap_tickets add column if not exists zelle_details text;
+alter table if exists public.ticketswap_tickets add column if not exists cashapp_cashtag text;
+
