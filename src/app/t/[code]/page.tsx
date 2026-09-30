@@ -68,8 +68,8 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   const seats: any[] = Array.isArray(ticket?.seats) ? ticket!.seats : [];
   const status = (ticket as any)?.payment_status || "pending";
   const cur = ticket ? (ticket.currency ? ({ AUD:{code:"AUD",symbol:"A$",locale:"en-AU"}, EUR:{code:"EUR",symbol:"€",locale:"de-DE"}, GBP:{code:"GBP",symbol:"£",locale:"en-GB"}} as any)[String(ticket.currency).toUpperCase()] || currencyForLocation(ticket.city, ticket.location) : currencyForLocation(ticket.city, ticket.location)) : { code: "EUR", symbol: "€", locale: "nl-NL" };
-  const fmt = (n: number) => formatPriceWithCurrency(n, ticket?.currency);
-    const fmtSingle = ticket ? formatPriceWithCurrency(amount, ticket.currency) : `€${amount.toLocaleString()}`;
+  const fmt = (n: number) => formatPriceWithCurrency(n, ticket?.currency || "EUR");
+  const fmtSingle = ticket ? formatPriceWithCurrency(amount, ticket.currency || "EUR") : `€${amount.toLocaleString()}`;
   const isOwner = !!(user && ticket && (ticket as any).user_id && user.id === (ticket as any).user_id);
 
   const copy = async (t: string) => {
