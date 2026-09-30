@@ -16,18 +16,18 @@ export const metadata: Metadata = {
   title: "TicketSwap | Safe & fair ticket resale",
   description: "The safest way to buy and sell tickets with over 20.6 million fans. Prices capped at 20% above face value. Primary tickets from 6000+ partnered events. SecureSwap.",
   openGraph: {
-    title: "TicketSwap | Safe & fair ticket resale",
-    description: "Prices capped at 20% above face value. Primary tickets from 6000+ partnered events.",
-    type: "website",
+  title: "TicketSwap | Safe & fair ticket resale",
+  description: "Prices capped at 20% above face value. Primary tickets from 6000+ partnered events.",
+  type: "website",
   },
 };
 
 function ThemeScript() {
   const code = `(function(){
   try{
-    var k='theme';
-    var s=localStorage.getItem(k);
-    if(s==='light'){document.documentElement.classList.remove('dark')}else{document.documentElement.classList.add('dark');if(!s)localStorage.setItem(k,'dark')}
+  var k='theme';
+  var s=localStorage.getItem(k);
+  if(s==='light'){document.documentElement.classList.remove('dark')}else{document.documentElement.classList.add('dark');if(!s)localStorage.setItem(k,'dark')}
   }catch(e){document.documentElement.classList.add('dark')}
 })();`;
   return <script dangerouslySetInnerHTML={{ __html: code }} />;
@@ -35,11 +35,11 @@ function ThemeScript() {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head><ThemeScript /></head>
-      <body className={inter.className}>
-        <AuthProvider>{children}</AuthProvider>
-      </body>
-    </html>
+  <html lang="en" suppressHydrationWarning>
+  <head><ThemeScript /></head>
+  <body className={inter.className}>
+  <AuthProvider>{children}</AuthProvider>
+  </body>
+  </html>
   );
 }

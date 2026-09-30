@@ -24,25 +24,25 @@ const MAP: Record<string, Currency> = {
 export function currencyForLocation(city?: string | null, location?: string | null): Currency {
   const key = `${city || ""} ${location || ""}`.toLowerCase();
   for (const [k, v] of Object.entries(MAP)) {
-    if (key.includes(k)) return v;
+  if (key.includes(k)) return v;
   }
   // fallback to browser locale
   if (typeof navigator !== "undefined" && navigator.language) {
-    const lang = navigator.language.toLowerCase();
-    if (lang.includes("en-gb")) return { code: "GBP", symbol: "£", locale: "en-GB" };
-    if (lang.includes("en-us")) return { code: "USD", symbol: "$", locale: "en-US" };
-    if (lang.includes("ja")) return { code: "JPY", symbol: "¥", locale: "ja-JP" };
-    if (lang.includes("hu")) return { code: "HUF", symbol: "Ft", locale: "hu-HU" };
+  const lang = navigator.language.toLowerCase();
+  if (lang.includes("en-gb")) return { code: "GBP", symbol: "£", locale: "en-GB" };
+  if (lang.includes("en-us")) return { code: "USD", symbol: "$", locale: "en-US" };
+  if (lang.includes("ja")) return { code: "JPY", symbol: "¥", locale: "ja-JP" };
+  if (lang.includes("hu")) return { code: "HUF", symbol: "Ft", locale: "hu-HU" };
   }
   return { code: "EUR", symbol: "€", locale: "nl-NL" };
 }
 
 export function formatPrice(price: number | null | undefined, city?: string | null, location?: string | null): string {
-  if (price == null || isNaN(Number(price))) return "—";
+  if (price == null || isNaN(Number(price))) return " - ";
   const c = currencyForLocation(city, location);
   try {
-    return new Intl.NumberFormat(c.locale, { style: "currency", currency: c.code, maximumFractionDigits: c.code === "JPY" || c.code === "HUF" ? 0 : 2 }).format(Number(price));
+  return new Intl.NumberFormat(c.locale, { style: "currency", currency: c.code, maximumFractionDigits: c.code === "JPY" || c.code === "HUF" ? 0 : 2 }).format(Number(price));
   } catch {
-    return `${c.symbol}${Number(price).toFixed(2)}`;
+  return `${c.symbol}${Number(price).toFixed(2)}`;
   }
 }

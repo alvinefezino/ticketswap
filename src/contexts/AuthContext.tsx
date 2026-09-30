@@ -19,32 +19,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!supabase) { setLoading(false); return; }
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session || null);
-      setUser(data.session?.user || null);
-      setLoading(false);
-    });
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => {
-      setSession(s);
-      setUser(s?.user || null);
-    });
-    return () => sub.subscription.unsubscribe();
+  if (!supabase) { setLoading(false); return; }
+  supabase.auth.getSession().then(({ data }) => {
+  setSession(data.session || null);
+  setUser(data.session?.user || null);
+  setLoading(false);
+  });
+  const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => {
+  setSession(s);
+  setUser(s?.user || null);
+  });
+  return () => sub.subscription.unsubscribe();
   }, []);
 
   const signUp = async (email: string, password: string) => {
-    if (!supabase) return { error: { message: "Supabase not configured" } };
-    const { error } = await supabase.auth.signUp({ email, password });
-    return { error };
+  if (!supabase) return { error: { message: "Supabase not configured" } };
+  const { error } = await supabase.auth.signUp({ email, password });
+  return { error };
   };
   const signIn = async (email: string, password: string) => {
-    if (!supabase) return { error: { message: "Supabase not configured" } };
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    return { error };
+  if (!supabase) return { error: { message: "Supabase not configured" } };
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  return { error };
   };
   const signOut = async () => {
-    if (!supabase) return;
-    await supabase.auth.signOut();
+  if (!supabase) return;
+  await supabase.auth.signOut();
   };
   return <AuthCtx.Provider value={{ user, session, loading, signUp, signIn, signOut }}>{children}</AuthCtx.Provider>;
 }

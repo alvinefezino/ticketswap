@@ -10,14 +10,14 @@ export async function POST(req: NextRequest) {
   let authUserId: string | null = null;
   const authHeader = req.headers.get("authorization") || req.headers.get("Authorization");
   if (authHeader?.startsWith("Bearer ") && anon) {
-    const token = authHeader.slice(7).trim();
-    if (token) {
-      try {
-        const supaAnon = createClient(url, anon);
-        const { data } = await supaAnon.auth.getUser(token);
-        if (data?.user) authUserId = data.user.id;
-      } catch {}
-    }
+  const token = authHeader.slice(7).trim();
+  if (token) {
+  try {
+  const supaAnon = createClient(url, anon);
+  const { data } = await supaAnon.auth.getUser(token);
+  if (data?.user) authUserId = data.user.id;
+  } catch {}
+  }
   }
   if (!authUserId) return NextResponse.json({ error: "Please log in" }, { status: 401 });
 
@@ -42,16 +42,16 @@ export async function POST(req: NextRequest) {
   // on reject/reset also clear receipt
   const patch: any = { payment_status: newStatus };
   if (action === "reject" || action === "reset") {
-    // keep receipt_url for audit but allow re-upload — we keep it, just status pending
-    // to truly clear, owner can re-upload flow will overwrite
+  // keep receipt_url for audit but allow re-upload - we keep it, just status pending
+  // to truly clear, owner can re-upload flow will overwrite
   }
 
   const { error } = await supa.from("ticketswap_tickets").update(patch).eq("receipt_code", receipt_code);
   if (error) {
-    if (error.message.toLowerCase().includes("column") && error.message.toLowerCase().includes("does not exist")) {
-      return NextResponse.json({ error: error.message + " — run supabase_ticketswap_tickets.sql" }, { status: 500 });
-    }
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  if (error.message.toLowerCase().includes("column") && error.message.toLowerCase().includes("does not exist")) {
+  return NextResponse.json({ error: error.message + " - run supabase_ticketswap_tickets.sql" }, { status: 500 });
+  }
+  return NextResponse.json({ error: error.message }, { status: 500 });
   }
   return NextResponse.json({ ok: true, receipt_code, payment_status: newStatus });
 }

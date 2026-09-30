@@ -7,4 +7,4 @@ export async function POST(req: NextRequest){
   console.log("sell listing (clone demo)", body);
   return NextResponse.redirect(new URL("/?listed=1", req.url), 303);
 }
-export async function GET(){ return NextResponse.json({ ok:true, clone:"ticketswap.com", mode:"demo — wire Supabase swap_listings + Resend to go live" }); }
+export async function GET(){ return NextResponse.json({ ok:true, clone:"ticketswap.com", mode:"demo - wire Supabase swap_listings + Resend to go live" }); }

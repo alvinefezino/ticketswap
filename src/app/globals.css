@@ -38,13 +38,13 @@ input, button, select, textarea { font: inherit; }
   * { word-break: break-word; }
 }
 
-/* Dark mode — default for every device */
+/* Dark mode - default for every device */
 html.dark { color-scheme: dark; }
 html.dark body { color: #F9FAFB; background: #0A0E14; }
 html.dark ::-webkit-scrollbar-thumb { background: #374151; }
 html.dark ::selection { background: rgba(0,194,168,0.3); }
 
-/* Dark mode overrides — make existing light markup dark automatically */
+/* Dark mode overrides - make existing light markup dark automatically */
 html.dark .bg-white { background-color: #111827 !important; }
 html.dark .bg-\[\#F8FAFC\] { background-color: #1F2937 !important; }
 html.dark .bg-\[\#F5F7F9\] { background-color: #1F2937 !important; }
@@ -59,11 +59,11 @@ html.dark .bg-\[\#FCFEFE\] { background-color: #0F1A19 !important; }
 
 html.dark .text-\[\#0A0E14\] { color: #F9FAFB !important; }
 html.dark .text-\[\#111827\] { color: #F9FAFB !important; }
-html.dark .text-\[\#1F2937\] { color: #E5E7EB !important; }
-html.dark .text-\[\#374151\] { color: #D1D5DB !important; }
-html.dark .text-\[\#4B5563\] { color: #9CA3AF !important; }
-html.dark .text-\[\#6B7280\] { color: #9CA3AF !important; }
-html.dark .text-\[\#9CA3AF\] { color: #6B7280 !important; }
+html.dark .text-\[\#1F2937\] { color: #F9FAFB !important; }
+html.dark .text-\[\#374151\] { color: #F9FAFB !important; }
+html.dark .text-\[\#4B5563\] { color: #F9FAFB !important; }
+html.dark .text-\[\#6B7280\] { color: #F9FAFB !important; }
+html.dark .text-\[\#9CA3AF\] { color: #F9FAFB !important; }
 html.dark .text-\[\#065F46\] { color: #6EE7B7 !important; }
 html.dark .text-\[\#0F766E\] { color: #5EE9D1 !important; }
 html.dark .text-\[\#78350F\] { color: #FDE68A !important; }
@@ -76,4 +76,43 @@ html.dark input, html.dark textarea, html.dark select { background-color: #1F293
 html.dark input::placeholder { color: #6B7280 !important; }
 html.dark input:focus { background-color: #111827 !important; border-color: #00C2A8 !important; }
 html.dark .shadow-\[0_8px_32px_rgba\(0\,0\,0\,0\.08\)\] { box-shadow: 0 8px 32px rgba(0,0,0,0.35) !important; }
+
+/* Make wrappers follow theme - full page dark */
+html.dark .min-h-screen.bg-white { background-color: #0A0E14 !important; }
+html.dark .min-h-screen { background-color: #0A0E14 !important; color: #F9FAFB !important; }
+
+/* Inline style overrides for headers/cards that use style={{color: BLACK}} etc */
+html.dark [style*="#0A0E14"] { color: #F9FAFB !important; }
+html.dark [style*="#111827"] { color: #F9FAFB !important; }
+html.dark [style*="border-color: #E5E7EB"] { border-color: #2A3441 !important; }
+html.dark [style*="borderColor: #E5E7EB"] { border-color: #2A3441 !important; }
+html.dark [style*="#E5E7EB"] { border-color: #2A3441 !important; }
+
+/* Ensure all plain text flips to white in dark */
+html.dark p, html.dark h1, html.dark h2, html.dark h3, html.dark span, html.dark div, html.dark label { color: inherit; }
+html.dark .text-white { color: #F9FAFB !important; }
+
+/* Cards inside dark page stay slightly lighter */
+html.dark .min-h-screen.bg-\[\#F5F7F9\] { background-color: #0A0E14 !important; }
+html.dark .min-h-screen.bg-\[\#F5F7F9\] .bg-white { background-color: #111827 !important; }
+html.dark .min-h-screen .rounded-2xl.bg-white,
+html.dark .min-h-screen .rounded-xl.bg-white,
+html.dark .min-h-screen header.bg-white { background-color: #111827 !important; }
+
+/* Inputs already handled, ensure focus */
+html.dark input { background-color: #1F2937 !important; }
+
+/* User requested: all text white in dark, black in light */
+html.dark .text-\[\#6B7280\],
+html.dark .text-\[\#9CA3AF\],
+html.dark .text-\[\#4B5563\],
+html.dark .text-\[\#374151\],
+html.dark .text-\[\#1F2937\],
+html.dark .text-\[\#78350F\],
+html.dark .text-\[\#92400E\],
+html.dark .text-\[\#7F1D1D\],
+html.dark .text-\[\#065F46\],
+html.dark .text-\[\#0F766E\] { color: #F9FAFB !important; }
+html.dark label, html.dark span, html.dark p { color: #F9FAFB; }
+html.dark label .text-\[\#6B7280\] { color: #F9FAFB !important; }
 
