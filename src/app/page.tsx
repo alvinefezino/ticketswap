@@ -86,7 +86,7 @@ function PartnersStrip() {
   <div className="border-y bg-white overflow-hidden" style={{ borderColor: BORDER }}>
   <div className="mx-auto max-w-[1280px] px-3 sm:px-4 h-[44px] sm:h-[48px] flex items-center gap-3 sm:gap-5 overflow-x-auto no-scrollbar">
   <span className="text-[10px] sm:text-[11px] font-black tracking-[0.9px] text-[#6B7280] whitespace-nowrap shrink-0">OVER 6000 PARTNERS</span>
-  <Link href="#" className="text-[11px] font-bold underline underline-offset-2 whitespace-nowrap shrink-0 hover:text-black">Become a partner →</Link>
+  <Link href="#" className="text-[11px] font-bold underline underline-offset-2 whitespace-nowrap shrink-0 hover:text-black">Become a partner <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" className="inline-block ml-1"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></Link>
   <div className="hidden md:flex items-center gap-8 flex-1 justify-end opacity-[0.55]">
   {PARTNERS.map((p,i)=> <span key={i} className="text-[11px] font-black tracking-[1px] text-[#1F2937] whitespace-nowrap">{p}</span>)}
   </div>
@@ -112,13 +112,13 @@ function Hero() {
   <span className="inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 bg-white font-medium" style={{ borderColor: BORDER }}>Primary tickets from 6000+ partnered events</span>
   </div>
   <div className="mx-auto mt-6 sm:mt-8 max-w-[640px] flex items-center gap-2 rounded-full border bg-white p-1 sm:p-1.5 shadow-[0_8px_32px_rgba(0,0,0,0.08)] focus-within:shadow-[0_8px_32px_rgba(0,0,0,0.12)] focus-within:border-[#00C2A8] transition" style={{ borderColor: BORDER }}>
-  <span className="pl-2.5 sm:pl-3.5 text-[#9CA3AF] shrink-0 text-[16px]">⌕</span>
+  <span className="pl-2.5 sm:pl-3.5 shrink-0 grid place-items-center"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></span>
   <input value={q} onChange={e=> setQ(e.target.value)} placeholder="Search event, artist, venue" className="flex-1 min-w-0 outline-none text-[13px] sm:text-[14px] placeholder:text-[#9CA3AF] py-2.5 bg-transparent" />
   <button className="shrink-0 rounded-full px-5 sm:px-7 py-2.5 sm:py-[11px] text-[13px] sm:text-[14px] font-bold text-white hover:brightness-[0.96] active:scale-[0.98] transition shadow-sm" style={{ background: TEAL }}>Search</button>
   </div>
   <div className="mt-3.5 flex flex-wrap justify-center gap-4 sm:gap-8 text-[12px] sm:text-[13px] text-[#6B7280]">
-  <span className="inline-flex items-center gap-1"><span className="text-[#00C2A8]">★★★★★</span> 4.7 | 9,000+ reviews <span className="opacity-60 text-[11px]">Trustpilot</span></span>
-  <span className="hidden sm:inline-flex items-center gap-1"><span className="text-[#00C2A8]">★★★★★</span> 4.6 | 6,000+ reviews <span className="opacity-60 text-[11px]">Google</span></span>
+  <span className="inline-flex items-center gap-1"><span className="inline-flex gap-0.5" aria-label="5 stars"><svg viewBox="0 0 24 24" width="12" height="12" fill="#00C2A8" stroke="#00C2A8" stroke-width="1.2" aria-hidden="true"><path d="M12 2l2.4 7.2h7.6l-6 4.4 2.3 7.2L12 16.6 5.7 20.8l2.3-7.2-6-4.4h7.6z"/></svg><svg viewBox="0 0 24 24" width="12" height="12" fill="#00C2A8" stroke="#00C2A8" stroke-width="1.2" aria-hidden="true"><path d="M12 2l2.4 7.2h7.6l-6 4.4 2.3 7.2L12 16.6 5.7 20.8l2.3-7.2-6-4.4h7.6z"/></svg><svg viewBox="0 0 24 24" width="12" height="12" fill="#00C2A8" stroke="#00C2A8" stroke-width="1.2" aria-hidden="true"><path d="M12 2l2.4 7.2h7.6l-6 4.4 2.3 7.2L12 16.6 5.7 20.8l2.3-7.2-6-4.4h7.6z"/></svg><svg viewBox="0 0 24 24" width="12" height="12" fill="#00C2A8" stroke="#00C2A8" stroke-width="1.2" aria-hidden="true"><path d="M12 2l2.4 7.2h7.6l-6 4.4 2.3 7.2L12 16.6 5.7 20.8l2.3-7.2-6-4.4h7.6z"/></svg><svg viewBox="0 0 24 24" width="12" height="12" fill="#00C2A8" stroke="#00C2A8" stroke-width="1.2" aria-hidden="true"><path d="M12 2l2.4 7.2h7.6l-6 4.4 2.3 7.2L12 16.6 5.7 20.8l2.3-7.2-6-4.4h7.6z"/></svg></span> 4.7 | 9,000+ reviews <span className="opacity-60 text-[11px]">Trustpilot</span></span>
+  <span className="hidden sm:inline-flex items-center gap-1"><span className="inline-flex gap-0.5" aria-label="5 stars"><svg viewBox="0 0 24 24" width="12" height="12" fill="#00C2A8" stroke="#00C2A8" stroke-width="1.2" aria-hidden="true"><path d="M12 2l2.4 7.2h7.6l-6 4.4 2.3 7.2L12 16.6 5.7 20.8l2.3-7.2-6-4.4h7.6z"/></svg><svg viewBox="0 0 24 24" width="12" height="12" fill="#00C2A8" stroke="#00C2A8" stroke-width="1.2" aria-hidden="true"><path d="M12 2l2.4 7.2h7.6l-6 4.4 2.3 7.2L12 16.6 5.7 20.8l2.3-7.2-6-4.4h7.6z"/></svg><svg viewBox="0 0 24 24" width="12" height="12" fill="#00C2A8" stroke="#00C2A8" stroke-width="1.2" aria-hidden="true"><path d="M12 2l2.4 7.2h7.6l-6 4.4 2.3 7.2L12 16.6 5.7 20.8l2.3-7.2-6-4.4h7.6z"/></svg><svg viewBox="0 0 24 24" width="12" height="12" fill="#00C2A8" stroke="#00C2A8" stroke-width="1.2" aria-hidden="true"><path d="M12 2l2.4 7.2h7.6l-6 4.4 2.3 7.2L12 16.6 5.7 20.8l2.3-7.2-6-4.4h7.6z"/></svg><svg viewBox="0 0 24 24" width="12" height="12" fill="#00C2A8" stroke="#00C2A8" stroke-width="1.2" aria-hidden="true"><path d="M12 2l2.4 7.2h7.6l-6 4.4 2.3 7.2L12 16.6 5.7 20.8l2.3-7.2-6-4.4h7.6z"/></svg></span> 4.6 | 6,000+ reviews <span className="opacity-60 text-[11px]">Google</span></span>
   </div>
   </div>
   </section>
@@ -148,13 +148,13 @@ function HowBand() {
   <section className="mx-auto max-w-[1280px] px-3 sm:px-4 py-6 sm:py-8">
   <div className="rounded-2xl p-4 sm:p-5 md:px-6 md:py-5 flex flex-col gap-4 md:flex-row md:items-center md:justify-between" style={{ background: "#F5F7F9", border: `1px solid ${BORDER}` }}>
   <div className="flex gap-3.5 flex-1">
-  <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-black text-[14px] shrink-0 shadow-sm" style={{ background: TEAL }}>✓</div>
+  <div className="w-10 h-10 rounded-full flex items-center justify-center text-white shrink-0 shadow-sm" style={{ background: TEAL }}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg></div>
   <div className="min-w-0">
   <div className="text-[12px] sm:text-[13px] font-black tracking-[0.5px] leading-none">HOW SECURESWAP WORKS - LIKE TICKETSWAP</div>
-  <div className="mt-1.5 text-[12px] sm:text-[13px] leading-5 text-[#4B5563]">1. Seller lists at fair price (max +20%) | 2. Buyer pays - funds held securely | 3. Seller transfers via Ticket Transfer email → Accept | 4. Seller gets payout</div>
+  <div className="mt-1.5 text-[12px] sm:text-[13px] leading-5 text-[#4B5563]">1. Our team lists at fair price (max +20%) | 2. Buyer pays - funds held securely | 3. Our team transfers via Ticket Transfer email <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" className="inline-block ml-1"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg> Accept | 4. Our team gets payout</div>
   </div>
   </div>
-  <Link href="/how-it-works" className="shrink-0 self-start md:self-auto rounded-full border bg-white px-5 py-2.5 text-[13px] font-bold hover:bg-[#F9FAFB] active:scale-[0.98] transition shadow-sm" style={{ borderColor: BORDER }}>How it works →</Link>
+  <Link href="/how-it-works" className="shrink-0 self-start md:self-auto rounded-full border bg-white px-5 py-2.5 text-[13px] font-bold hover:bg-[#F9FAFB] active:scale-[0.98] transition shadow-sm" style={{ borderColor: BORDER }}>How it works <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" className="inline-block ml-1"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></Link>
   </div>
   </section>
   );
@@ -222,7 +222,7 @@ export default function Page() {
   <section className="mx-auto max-w-[1280px] px-3 sm:px-4">
   <div className="flex items-end justify-between gap-3">
   <h2 className="text-[17px] sm:text-[19px] font-black tracking-[-0.5px] leading-none">Discover | Following</h2>
-  <Link href="/sell" className="text-[12px] sm:text-[13px] font-bold hover:underline underline-offset-4 shrink-0" style={{ color: TEAL }}>Recommendations for you →</Link>
+  <Link href="/sell" className="text-[12px] sm:text-[13px] font-bold hover:underline underline-offset-4 shrink-0" style={{ color: TEAL }}>Recommendations for you <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" className="inline-block ml-1"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></Link>
   </div>
   <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
   {listings.map(ev=> <EventCard key={ev.id} ev={ev as any} />)}
@@ -235,7 +235,7 @@ export default function Page() {
   {[
   { k:"SAFE", t:"Buyer protection", d:"Funds held by SecureSwap until you confirm. No fake tickets." },
   { k:"FAIR", t:"Capped at +20%", d:"Like TicketSwap - max 20% above face value. No scalping." },
-  { k:"FAST", t:"Instant transfer", d:"Seller transfers via Ticket Transfer email → you Accept → seller paid." },
+  { k:"FAST", t:"Instant transfer", d:"Our team transfers via Ticket Transfer email > you Accept > our team will process payout." },
   ].map(c=> (
   <div key={c.k} className="rounded-2xl border bg-white p-5 hover:shadow-[0_4px_16px_rgba(0,0,0,0.04)] transition" style={{ borderColor: BORDER }}>
   <div className="text-[11px] font-black tracking-[1px]" style={{ color: TEAL }}>{c.k}</div>

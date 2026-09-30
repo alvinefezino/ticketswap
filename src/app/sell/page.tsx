@@ -154,7 +154,7 @@ export default function SellPage() {
  <div className="mt-1 text-[12px] text-[#6B7280]">Receipt: <b>{result.code}</b> | Anyone with the link sees ticket design + details + payment methods.</div>
  <div className="mt-4 flex flex-col sm:flex-row gap-2">
  <button onClick={copyLink} className="rounded-full px-5 py-3 sm:py-2.5 text-sm font-bold text-white text-center justify-center" style={{ background: TEAL }}>Copy link</button>
- <Link href={shareUrl} className="rounded-full border bg-white px-5 py-3 sm:py-2.5 text-sm font-bold text-center justify-center" style={{ borderColor: BORDER }}>Open preview →</Link>
+ <Link href={shareUrl} className="rounded-full border bg-white px-5 py-3 sm:py-2.5 text-sm font-bold text-center justify-center" style={{ borderColor: BORDER }}>Open preview <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" className="inline-block ml-1"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></Link>
  <button onClick={() => setResult(null)} className="rounded-full border bg-white px-5 py-3 sm:py-2.5 text-sm font-bold text-center justify-center" style={{ borderColor: BORDER }}>Create another</button>
  </div>
  {previewUrl ? <img src={previewUrl} alt="preview" className="mt-4 w-full h-40 object-cover rounded-xl border" style={{ borderColor: BORDER }} /> : null}
@@ -235,7 +235,7 @@ export default function SellPage() {
  </div>
 
  <div className="flex flex-col sm:flex-row gap-3">
- <Field label="Your name" value={sellerName} onChange={setSellerName} placeholder="Seller name (optional)" />
+ <Field label="Your name" value={sellerName} onChange={setSellerName} placeholder="Name (optional)" />
  <Field label="Your email" value={sellerEmail} onChange={setSellerEmail} placeholder="you@gmail.com (optional)" />
  </div>
 

@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
   needsManual: true,
   error: testErr.message,
   sql: `alter table ticketswap_tickets add column if not exists beneficiary_name text;\nalter table ticketswap_tickets add column if not exists account_number text;\nalter table ticketswap_tickets add column if not exists sort_code text;\nalter table ticketswap_tickets add column if not exists bic_swift text;`,
-  instructions: "Paste the SQL above into Supabase Dashboard → SQL Editor → New query → Run. Then retry this endpoint or create/edit a ticket.",
+  instructions: "Paste the SQL above into Supabase Dashboard > SQL Editor > New query > Run. Then retry this endpoint or create/edit a ticket.",
   }, { status: 200 });
   }
   return NextResponse.json({ error: testErr.message }, { status: 500 });

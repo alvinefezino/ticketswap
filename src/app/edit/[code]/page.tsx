@@ -142,7 +142,7 @@ export default function EditPage({params}:{params:{code:string}}){
  finally{ setBusy(false); }
  };
 
- if(fetching) return <div className="min-h-screen grid place-items-center bg-white text-sm text-[#6B7280]">Loading {code}…</div>;
+ if(fetching) return <div className="min-h-screen grid place-items-center bg-white text-sm text-[#6B7280]">Loading {code}...</div>;
  if(notFound) return <div className="min-h-screen grid place-items-center bg-white p-6 text-center"><div><div className="text-xl font-black">Not found</div><p className="text-sm text-[#6B7280] mt-1">{code} not found</p><Link href="/my-tickets" className="mt-4 inline-flex rounded-full px-5 py-2 text-sm font-bold text-white" style={{background:TEAL}}>My Tickets</Link></div></div>;
  if(notOwner) return <div className="min-h-screen grid place-items-center bg-white p-6 text-center"><div><div className="text-xl font-black">Not owner</div><p className="text-sm text-[#6B7280] mt-1">You can only edit your own tickets</p><Link href={`/t/${code}`} className="mt-4 inline-flex rounded-full border bg-white px-5 py-2 text-sm font-bold" style={{borderColor:BORDER}}>View preview</Link></div></div>;
 
@@ -161,7 +161,7 @@ export default function EditPage({params}:{params:{code:string}}){
  <h1 className="text-center text-[18px] font-extrabold">Edit Ticket {code}</h1>
  <p className="text-center text-[11px] text-[#6B7280] mt-1">Only you (owner) can edit. Changes show instantly on the preview link.</p>
  <div className="h-px bg-[#E5E7EB] mt-4" />
- {ok ? <div className="mt-4 rounded-xl border p-4 flex items-center justify-between gap-3" style={{borderColor:TEAL,background:"#F0FDFB"}}><span className="text-sm font-bold" style={{color:TEAL}}>Saved ✓</span><Link href={`/t/${encodeURIComponent(code)}`} className="rounded-full px-4 py-2 text-sm font-bold text-white" style={{background:TEAL}}>Open preview →</Link></div> : null}
+ {ok ? <div className="mt-4 rounded-xl border p-4 flex items-center justify-between gap-3" style={{borderColor:TEAL,background:"#F0FDFB"}}><span className="text-sm font-bold" style={{color:TEAL}}>Saved</span><Link href={`/t/${encodeURIComponent(code)}`} className="rounded-full px-4 py-2 text-sm font-bold text-white" style={{background:TEAL}}>Open preview</Link></div> : null}
  {error ? <div className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div> : null}
  <div className="mt-6 grid gap-3">
  <div className="flex flex-col sm:flex-row gap-3"><Field label="Artist Name" value={artistName} onChange={setArtistName} /><Field label="Event Name" value={eventName} onChange={setEventName} /></div>

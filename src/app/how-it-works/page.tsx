@@ -14,9 +14,9 @@ export default function HowItWorks(){
   <p className="mt-2 text-[14px] text-[#6B7280]">Exact flow like ticketswap.com - Safe, convenient and fair. Prices capped at 20% above face value.</p>
   <div className="mt-8 grid md:grid-cols-3 gap-4">
   {[
-  {n:"01", t:"Seller lists", d:"Seller picks ticket from My Tickets → sets price (capped +20%). Listing goes live on Discover."},
-  {n:"02", t:"Buyer pays - held", d:"Buyer clicks Buy → funds held by SecureSwap escrow. Seller gets email to transfer."},
-  {n:"03", t:"Transfer → Accept", d:"Seller uses Transfer → recipient Gmail gets 'Do you wish to accept?' email with details + Accept button."},
+  {n:"01", t:"Our team lists", d:"Our team picks ticket from My Tickets &gt; sets price (capped +20%). Listing goes live on Discover."},
+  {n:"02", t:"Buyer pays - held", d:"Buyer clicks Buy &gt; funds held by SecureSwap escrow. Our team gets email to transfer."},
+  {n:"03", t:"Transfer &gt; Accept", d:"Our team uses Transfer &gt; recipient Gmail gets 'Do you wish to accept?' email with details + Accept button."},
   ].map(s=> (
   <div key={s.n} className="rounded-2xl border bg-white p-5" style={{borderColor:BORDER}}>
   <div className="w-8 h-8 rounded-full flex items-center justify-center text-white font-black text-sm" style={{background:TEAL}}>{s.n}</div>
@@ -27,7 +27,7 @@ export default function HowItWorks(){
   </div>
   <div className="mt-6 rounded-2xl p-5" style={{background:"#F5F7F9", border:`1px solid ${BORDER}`}}>
   <div className="font-black text-[13px] tracking-[0.6px]">WHEN BUYER ACCEPTS - SELLER GETS EMAIL</div>
-  <div className="mt-2 text-[13px] leading-6 text-[#374151]">Recipient clicks <b>Accept Ticket</b> on /accept/[token] → API updates ticket_transfers → Resend sends email to seller: <i>&quot;They accepted your ticket - [event]&quot;</i> with receipt link. Seller sees &quot;Accepted by X&quot; on My Tickets (transfer_status=accepted). Decline works the same.</div>
+  <div className="mt-2 text-[13px] leading-6 text-[#374151]">Recipient clicks <b>Accept Ticket</b> on /accept/[token] &gt; API updates ticket_transfers &gt; Resend sends email to our team: <i>&quot;They accepted your ticket - [event]&quot;</i> with receipt link. Our team sees &quot;Accepted by X&quot; on My Tickets (transfer_status=accepted). Decline works the same.</div>
   </div>
   <div className="mt-8 flex gap-3">
   <Link href="/sell" className="rounded-full px-6 py-3 text-sm font-bold text-white" style={{background:TEAL}}>Sell your tickets</Link>

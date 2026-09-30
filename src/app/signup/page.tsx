@@ -56,7 +56,7 @@ export default function SignupPage() {
   <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@gmail.com" className="border rounded-xl px-4 py-3 font-normal outline-none" style={{ borderColor: BORDER }} />
   </label>
   <label className="grid gap-1 text-[13px] font-bold">Password
-  <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="•••••••• (min 6)" className="border rounded-xl px-4 py-3 font-normal outline-none" style={{ borderColor: BORDER }} />
+  <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="******** (min 6)" className="border rounded-xl px-4 py-3 font-normal outline-none" style={{ borderColor: BORDER }} />
   </label>
   <button disabled={busy} className="rounded-full py-3.5 text-sm font-bold text-white hover:opacity-90 disabled:opacity-60" style={{ background: TEAL }}>
   {busy ? "Creating..." : "Sign up"}

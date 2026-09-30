@@ -96,7 +96,7 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   const r = await fetch("/api/ticketswap/receipt/upload", { method: "POST", body: fd });
   const j = await r.json().catch(()=>({}));
   if (!r.ok) throw new Error(j.error || `Failed ${r.status}`);
-  setMsg("Receipt uploaded - seller will see it right away.");
+  setMsg("Receipt uploaded - our team will see it right away.");
   setUploadFile(null); setPreviewObj(null);
   setShowPaymentCompleted(true);
   await load();
@@ -141,7 +141,7 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   );
 
   const statusMeta = status === "confirmed" ? { label: "Payment confirmed", dot: "bg-[#10B981]", bg: "bg-[#ECFDF5]", border: "border-[#A7F3D0]", text: "text-[#065F46]" }
-  : status === "receipt_uploaded" ? { label: "Receipt uploaded - awaiting seller", dot: "bg-[#F59E0B]", bg: "bg-[#FFFBEB]", border: "border-[#FDE68A]", text: "text-[#92400E]" }
+  : status === "receipt_uploaded" ? { label: "Receipt uploaded - awaiting our team", dot: "bg-[#F59E0B]", bg: "bg-[#FFFBEB]", border: "border-[#FDE68A]", text: "text-[#92400E]" }
   : { label: "Awaiting payment", dot: "bg-[#9CA3AF]", bg: "bg-white", border: "border-[#E5E7EB]", text: "text-[#6B7280]" };
 
   return (
@@ -196,11 +196,11 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   <img src={qrUrl} alt="QR" className={`w-[112px] h-[112px] sm:w-28 sm:h-28 bg-white rounded-xl border p-2 ${status !== "confirmed" ? "blur-[7px] select-none" : ""}`} style={{ borderColor: BORDER }} />
   {status !== "confirmed" ? (
   <div className="absolute inset-0 grid place-items-center rounded-xl bg-white/55 backdrop-blur-[1px] border border-white/60 p-2 text-center">
-  <div className="rounded-full bg-[#111827] text-white px-3 py-1.5 text-[11px] font-black shadow-sm">🔒 Payment not verified</div>
-  <div className="text-[10px] leading-tight text-[#374151] mt-1 font-semibold">QR unlocks after seller confirms payment</div>
+  <div className="rounded-full bg-[#111827] text-white px-3 py-1.5 text-[11px] font-black shadow-sm inline-flex items-center gap-1.5"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Payment not verified</div>
+  <div className="text-[10px] leading-tight text-[#374151] mt-1 font-semibold">QR unlocks after our team confirms payment</div>
   </div>
   ) : (
-  <div className="absolute -bottom-1 -right-1 rounded-full bg-[#10B981] text-white w-7 h-7 grid place-items-center text-[12px] font-black shadow-sm border-2 border-white">✓</div>
+  <div className="absolute -bottom-1 -right-1 rounded-full bg-[#10B981] text-white w-7 h-7 grid place-items-center shadow-sm border-2 border-white"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg></div>
   )}
   </div>
   <div className="flex-1 text-center sm:text-left min-w-0">
@@ -271,7 +271,7 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   <div className="mt-3 grid gap-2">
   <div className="rounded-2xl border overflow-hidden bg-white" style={{ borderColor: BORDER }}>
   <div className="flex items-center gap-3 px-4 py-3 border-b bg-[#F8FAFC]" style={{ borderColor: BORDER }}>
-  <span className="w-9 h-9 rounded-xl grid place-items-center text-white font-black text-[13px] shrink-0" style={{ background: "#0A0E14" }}>🏦</span>
+  <span className="w-9 h-9 rounded-xl grid place-items-center text-white font-black text-[13px] shrink-0" style={{ background: "#0A0E14" }}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="10" rx="1.5"/><path d="M3 10h18"/><path d="M7 14h2"/><path d="M11 14h2"/><path d="M15 14h2"/><path d="M7 17h2"/><path d="M11 17h2"/><path d="M8 7V5a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/></svg></span>
   <span className="text-[13px] font-black tracking-[-0.2px]">Bank transfer</span>
   <span className="ml-auto text-[11px] font-bold px-2.5 py-1 rounded-full bg-[#F0FDFB] border" style={{ borderColor: "#CCFBF1", color: "#0F766E" }}>{cur.code} | {fmt(total)} total</span>
   </div>
@@ -286,7 +286,7 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   ].map((r: any) => (
   <div key={r.k} className={`rounded-xl border p-3 flex items-center justify-between gap-3 ${r.hl ? "bg-[#F0FDFB] border-[#CCFBF1]" : "bg-[#F8FAFC]"}`} style={{ borderColor: r.hl ? "#CCFBF1" : BORDER }}>
   <div className="min-w-0"><div className="text-[10px] font-bold tracking-[0.6px] text-[#6B7280]">{r.k.toUpperCase()}</div><div className={`font-bold break-all text-[13px] ${r.mono ? "font-mono" : ""}`}>{r.v}</div></div>
-  <button onClick={() => copy(String(r.v))} className="shrink-0 h-9 w-9 rounded-full border bg-white grid place-items-center active:scale-95" style={{ borderColor: BORDER }} aria-label={`Copy ${r.k}`}><span className="text-[12px]">⧉</span></button>
+  <button onClick={() => copy(String(r.v))} className="shrink-0 h-9 w-9 rounded-full border bg-white grid place-items-center active:scale-95" style={{ borderColor: BORDER }} aria-label={`Copy ${r.k}`}><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v3"/></svg></button>
   </div>
   ))}
   </div>
@@ -297,7 +297,7 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   <span className="text-sm shrink-0">\uD83D\uDCA1</span>
   <ol className="text-[12px] leading-5 list-decimal pl-4" style={{ color: "#78350F" }}>
   <li>Transfer <b>{fmt(total)}</b> with Reference <b className="font-mono">{ticket.receipt_code}</b>.</li>
-  <li>Upload receipt below - seller confirms in their dashboard.</li>
+  <li>Upload receipt below - our team confirms in their dashboard.</li>
   <li>Keep this link as your entry QR.</li>
   </ol>
   </div>
@@ -311,7 +311,7 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   {/* Payment Confirmation Notice */}
   <div className="mt-4 rounded-2xl border bg-white p-4 sm:p-5 shadow-[0_2px_16px_rgba(0,0,0,0.04)]" style={{ borderColor: "#E5E7EB" }}>
   <div className="flex items-start gap-3">
-  <span className="h-9 w-9 rounded-xl grid place-items-center text-white text-sm shrink-0" style={{ background: TEAL }}>✓</span>
+  <span className="h-9 w-9 rounded-xl grid place-items-center text-white text-sm shrink-0" style={{ background: TEAL }}><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg></span>
   <div className="min-w-0">
   <div className="text-[13px] font-black tracking-[0.2px]">Payment Confirmation Notice</div>
   <div className="mt-2 text-[13px] leading-relaxed text-[#374151]">
@@ -352,7 +352,7 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   <div className="mx-4 sm:mx-5 rounded-xl border p-3 flex items-center justify-between gap-3 bg-[#ECFDF5]" style={{ borderColor: "#A7F3D0" }}>
   <div className="flex items-center gap-2">
   <span className="h-7 w-7 rounded-full bg-[#10B981] text-white grid place-items-center text-sm">\u2713</span>
-  <div><div className="text-[13px] font-black text-[#065F46]">Payment confirmed by seller</div><div className="text-[11px] text-[#065F46]/80">You are all set for entry.</div></div>
+  <div><div className="text-[13px] font-black text-[#065F46]">Payment confirmed by our team</div><div className="text-[11px] text-[#065F46]/80">You are all set for entry.</div></div>
   </div>
   {isOwner ? <button onClick={()=>doConfirm("reject")} className="shrink-0 rounded-full border bg-white px-3 py-1.5 text-xs font-bold active:scale-95" style={{ borderColor: BORDER }}>Revert</button> : null}
   </div>
@@ -394,7 +394,7 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   <div className="mx-3 sm:mx-4 mt-3 rounded-2xl border-2 border-dashed p-4 text-center bg-[#F8FAFC]" style={{ borderColor: "#E5E7EB" }}>
   <div className="h-10 w-10 rounded-full bg-white border grid place-items-center mx-auto text-sm" style={{ borderColor: BORDER }}>\uD83D\uDCE4</div>
   <div className="text-[13px] font-bold mt-2">No receipt yet</div>
-  <div className="text-xs text-[#6B7280] mt-1">Upload below - works for old tickets too. Seller sees it instantly in My Tickets.</div>
+  <div className="text-xs text-[#6B7280] mt-1">Upload below - works for old tickets too. Our team sees it instantly in My Tickets.</div>
   </div>
   )}
 
@@ -442,18 +442,18 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   </div>
 
   <label className="grid gap-1.5 text-left">
-  <span className="text-[11px] font-bold text-[#374151]">Your email <span className="font-normal text-[#9CA3AF]">(optional - helps seller contact you)</span></span>
+  <span className="text-[11px] font-bold text-[#374151]">Your email <span className="font-normal text-[#9CA3AF]">(optional - helps our team contact you)</span></span>
   <input value={uploadEmail} onChange={e=> setUploadEmail(e.target.value)} placeholder="you@gmail.com" inputMode="email" autoComplete="email" className="h-[48px] border rounded-xl px-4 text-[14px] outline-none bg-[#F8FAFC] focus:bg-white focus:border-[#00C2A8]" style={{ borderColor: BORDER }} />
   </label>
 
   <button onClick={doUpload} disabled={uploading || !uploadFile} className="h-[50px] rounded-full text-[15px] font-black text-white disabled:opacity-50 active:scale-[0.98] shadow-sm flex items-center justify-center gap-2" style={{ background: uploading || !uploadFile ? "#9CA3AF" : TEAL }}>
   {uploading ? <><span className="h-4 w-4 rounded-full border-2 border-white/40 border-t-white animate-spin" /> Uploading...</> : ticket.receipt_url ? "Replace receipt" : "Upload receipt"}
   </button>
-  <p className="text-[11px] text-center text-[#9CA3AF] leading-snug">By uploading you confirm the transfer was sent. Seller is notified and can confirm in My Tickets.</p>
+  <p className="text-[11px] text-center text-[#9CA3AF] leading-snug">By uploading you confirm the transfer was sent. Our team is notified and can confirm in My Tickets.</p>
   </div>
   ) : (
   <div className="p-4 sm:p-5 pt-3">
-  <p className="text-xs text-[#6B7280] text-center">Re-upload after seller reverts. Confirmed receipts are locked.</p>
+  <p className="text-xs text-[#6B7280] text-center">Re-upload after our team reverts. Confirmed receipts are locked.</p>
   </div>
   )}
   </div>
@@ -462,9 +462,9 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   {showPaymentCompleted ? (
   <div className="fixed inset-0 z-50 grid place-items-center p-4 bg-black/50 backdrop-blur-sm" onClick={() => setShowPaymentCompleted(false)}>
   <div className="w-full max-w-[420px] rounded-[20px] bg-white p-6 sm:p-7 shadow-2xl text-center" onClick={e => e.stopPropagation()}>
-  <div className="mx-auto h-14 w-14 rounded-full grid place-items-center text-white text-xl" style={{ background: TEAL }}>✓</div>
+  <div className="mx-auto h-14 w-14 rounded-full grid place-items-center text-white text-xl" style={{ background: TEAL }}><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg></div>
   <h3 className="mt-4 text-[18px] font-black tracking-[-0.3px]" style={{ color: BLACK }}>Payment completed</h3>
-  <p className="mt-1.5 text-[13px] leading-relaxed text-[#6B7280]">Your receipt has been uploaded successfully. The seller will be notified and will confirm your payment shortly. You can track the status on this page.</p>
+  <p className="mt-1.5 text-[13px] leading-relaxed text-[#6B7280]">Your receipt has been uploaded successfully. Our team will be notified and will confirm your payment shortly. You can track the status on this page.</p>
   <div className="mt-2 inline-flex rounded-full border px-3 py-1 text-[11px] font-bold bg-[#F0FDFB]" style={{ borderColor: "#CCFBF1", color: "#0F766E" }}>{code} | {ticket?.receipt_uploaded_at ? new Date(ticket.receipt_uploaded_at).toLocaleString() : "just now"}</div>
   <div className="mt-6 grid grid-cols-1 gap-2">
   <button onClick={() => setShowPaymentCompleted(false)} className="h-[46px] rounded-full text-sm font-black text-white active:scale-[0.98]" style={{ background: TEAL }}>Done</button>
