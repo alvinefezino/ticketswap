@@ -12,12 +12,12 @@ const BORDER = "#E5E7EB";
 const PARTNERS = ["DEFQON.1", "weeztix", "SZIGET", "Ancienne Belgique", "DGTL", "CERCLE"];
 
 const MOCK_EVENTS = [
-  { id: "1", title: "Fred Again..", venue: "Ziggo Dome", city: "Amsterdam", date: "Dec 12", image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600", price: 65, category: "Concert" },
-  { id: "2", title: "DGTL Festival 2026", venue: "NDSM Wharf", city: "Amsterdam", date: "Apr 18 - 19", image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600", price: 89, category: "Festival" },
-  { id: "3", title: "Sziget Festival", venue: "Óbuda Island", city: "Budapest", date: "Aug 6 - 11", image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600", price: 110, category: "Festival" },
-  { id: "4", title: "Ancienne Belgique - Live", venue: "Ancienne Belgique", city: "Brussels", date: "Jan 24", image: "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=600", price: 42, category: "Concert" },
-  { id: "5", title: "Cercle Festival", venue: "Le Bourget", city: "Paris", date: "May 24", image: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600", price: 78, category: "Festival" },
-  { id: "6", title: "Deftones", venue: "AFAS Live", city: "Amsterdam", date: "Feb 14", image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600", price: 55, category: "Concert" },
+  { id: "1", title: "Fred Again..", venue: "Ziggo Dome", city: "Amsterdam", date: "Dec 12", image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600", price: 65, currency: "EUR", category: "Concert" },
+  { id: "2", title: "DGTL Festival 2026", venue: "NDSM Wharf", city: "Amsterdam", date: "Apr 18 - 19", image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600", price: 89, currency: "EUR", category: "Festival" },
+  { id: "3", title: "Sziget Festival", venue: "Óbuda Island", city: "Budapest", date: "Aug 6 - 11", image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600", price: 110, currency: "EUR", category: "Festival" },
+  { id: "4", title: "Ancienne Belgique - Live", venue: "Ancienne Belgique", city: "Brussels", date: "Jan 24", image: "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=600", price: 42, currency: "EUR", category: "Concert" },
+  { id: "5", title: "Cercle Festival", venue: "Le Bourget", city: "Paris", date: "May 24", image: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600", price: 78, currency: "EUR", category: "Festival" },
+  { id: "6", title: "Deftones", venue: "AFAS Live", city: "Amsterdam", date: "Feb 14", image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600", price: 55, currency: "GBP", category: "Concert" },
 ];
 
 function Header() {

@@ -32,7 +32,7 @@ export default function MyTicketsPage(){
   if(!url||!anon){ setErr("Supabase not configured"); setFetching(false); return; }
   const { createClient } = await import("@supabase/supabase-js");
   const supa=createClient(url,anon);
-  const { data, error } = await supa.from("ticketswap_tickets").select("receipt_code,title,event_name,date,price,image_url,number_of_tickets,location,city,created_at,payment_status,receipt_url,receipt_type,receipt_uploaded_at,receipt_email").eq("user_id", userId).order("created_at",{ascending:false});
+  const { data, error } = await supa.from("ticketswap_tickets").select("receipt_code,title,event_name,date,price,currency,image_url,number_of_tickets,location,city,created_at,payment_status,receipt_url,receipt_type,receipt_uploaded_at,receipt_email").eq("user_id", userId).order("created_at",{ascending:false});
   if(error) throw new Error(error.message);
   setRows((data as Row[])||[]);
   fetchedForRef.current = userId;
@@ -115,7 +115,7 @@ export default function MyTicketsPage(){
   <span className={`rounded-full border px-2 py-0.5 text-[10px] font-black ${status==="confirmed"?"bg-[#ECFDF5] text-[#065F46] border-[#A7F3D0]":status==="receipt_uploaded"?"bg-[#FEF3C7] text-[#92400E] border-[#FDE68A]":"bg-white text-[#6B7280]"}`} style={{borderColor: status==="pending"?BORDER:undefined}}>{status.toUpperCase().replace("_"," ")}</span>
   </div>
   <div className="font-bold leading-tight mt-1 line-clamp-1" style={{color:BLACK}}>{r.event_name || r.title}</div>
-  <div className="text-[12px] text-[#6B7280] mt-1">{r.date} | {r.location || "TBA"}{r.city?`, ${r.city}`:""} | {r.number_of_tickets} ticket{r.number_of_tickets>1?"s":""} | {r.price!=null?`${formatPrice(r.price, r.city, r.location)}`:"Free"}</div>
+  <div className="text-[12px] text-[#6B7280] mt-1">{r.date} | {r.location || "TBA"}{r.city?`, ${r.city}`:""} | {r.number_of_tickets} ticket{r.number_of_tickets>1?"s":""} | {r.price!=null?`${formatPrice(r.price, r.city, r.location, (r as any).currency)}`:"Free"}</div>
   </div>
   </Link>
   <div className="px-4 pb-3 grid gap-2">

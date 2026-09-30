@@ -3,6 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
+import { SUPPORTED_CURRENCIES } from "@/lib/currency";
 
 const TEAL = "#00C2A8";
 const BORDER = "#E5E7EB";
@@ -36,6 +37,7 @@ export default function SellPage() {
  const [numberOfTickets, setNumberOfTickets] = useState("1");
  const [city, setCity] = useState("");
  const [price, setPrice] = useState("");
+ const [currency, setCurrency] = useState("EUR"); // Default currency
  const [sellerName, setSellerName] = useState("");
  const [sellerEmail, setSellerEmail] = useState("");
  const [beneficiaryName, setBeneficiaryName] = useState("");
@@ -101,6 +103,7 @@ export default function SellPage() {
  fd.append("seats", JSON.stringify(seats));
  fd.append("city", city.trim());
  fd.append("price", price.trim());
+  fd.append("currency", currency);
  fd.append("seller_name", sellerName.trim());
  fd.append("seller_email", sellerEmail.trim());
  fd.append("beneficiary_name", beneficiaryName.trim());
@@ -230,9 +233,10 @@ export default function SellPage() {
  {previewUrl ? <div className="h-36 rounded-[10px] overflow-hidden border" style={{ borderColor: BORDER }}><img src={previewUrl} alt="preview" className="w-full h-full object-cover" /></div> : null}
 
  <div className="flex flex-col sm:flex-row gap-3">
- <Field label="City" value={city} onChange={setCity} placeholder="City (optional) - sets currency" />
- <Field label="Price" value={price} onChange={setPrice} placeholder="0 for free" type="text" />
- </div>
+  <Field label="City" value={city} onChange={setCity} placeholder="City (optional)" />
+  <Field label="Price" value={price} onChange={setPrice} placeholder="0 for free" type="text" />
+  <label className="grid gap-1 sm:w-[160px]"><span className="text-[10px] font-semibold text-[#6B7280]">Currency</span><select value={currency} onChange={(e)=>setCurrency(e.target.value)} className="border rounded-[10px] px-3 h-[42px] text-[13px] outline-none bg-[#F8FAFC] focus:bg-white focus:border-[#00C2A8] font-semibold" style={{ borderColor: BORDER }}>{SUPPORTED_CURRENCIES.map((c)=> <option key={c.code} value={c.code}>{c.code} ({c.symbol})</option>)}</select></label>
+  </div>
 
  <div className="flex flex-col sm:flex-row gap-3">
  <Field label="Your name" value={sellerName} onChange={setSellerName} placeholder="Name (optional)" />
@@ -244,7 +248,7 @@ export default function SellPage() {
  <span className="w-7 h-7 rounded-full grid place-items-center text-white font-black text-xs" style={{ background: TEAL }}>$</span>
  <div>
  <div className="text-[12px] font-black tracking-[0.6px]">Bank transfer</div>
- <div className="text-[11px] text-[#6B7280]">This is shown to the buyer on the preview for payment. Currency auto by location/city.</div>
+ <div className="text-[11px] text-[#6B7280]">This is shown to the buyer on the preview for payment. Amount uses the currency you chose.</div>
  </div>
  </div>
  <Field label="Beneficiary name" value={beneficiaryName} onChange={setBeneficiaryName} placeholder="Name on account" />

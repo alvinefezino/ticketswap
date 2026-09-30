@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { SUPPORTED_CURRENCIES } from "@/lib/currency";
 import { useAuth } from "@/contexts/AuthContext";
 const TEAL="#00C2A8"; const BORDER="#E5E7EB"; const BLACK="#0A0E14";
 type Seat={section:string;row:string;seat:string};
@@ -29,6 +30,7 @@ export default function EditPage({params}:{params:{code:string}}){
  const [numberOfTickets,setNumberOfTickets]=useState("1");
  const [city,setCity]=useState("");
  const [price,setPrice]=useState("");
+ const [currency,setCurrency]=useState("EUR");
  const [sellerName,setSellerName]=useState("");
  const [sellerEmail,setSellerEmail]=useState("");
  const [beneficiaryName,setBeneficiaryName]=useState("");
@@ -74,6 +76,7 @@ export default function EditPage({params}:{params:{code:string}}){
  setNumberOfTickets(String((data as any).number_of_tickets||1));
  setCity((data as any).city||"");
  setPrice((data as any).price!=null? String((data as any).price):"");
+ setCurrency(((data as any).currency||"EUR").toUpperCase());
  setSellerName((data as any).seller_name||"");
  setSellerEmail((data as any).seller_email||"");
  setBeneficiaryName((data as any).beneficiary_name||"");
@@ -126,6 +129,7 @@ export default function EditPage({params}:{params:{code:string}}){
  fd.append("seats",JSON.stringify(seats));
  fd.append("city",city.trim());
  fd.append("price",price.trim());
+ fd.append("currency",currency);
  fd.append("seller_name",sellerName.trim());
  fd.append("seller_email",sellerEmail.trim());
  fd.append("beneficiary_name",beneficiaryName.trim());
@@ -175,7 +179,7 @@ export default function EditPage({params}:{params:{code:string}}){
  <label className="grid gap-1"><span className="text-[10px] font-semibold text-[#6B7280]">Image Url</span><input value={imageUrlText} onChange={e=>{setImageUrlText(e.target.value); if(e.target.value) setPreviewUrl(e.target.value);}} placeholder="https://..." className="border rounded-[10px] px-3 h-[42px] text-[13px] outline-none bg-[#F8FAFC] focus:bg-white" style={{borderColor:BORDER}} /></label>
  <label className="grid gap-1"><span className="text-[10px] font-semibold text-[#6B7280]">Upload photo</span><input type="file" accept="image/*" onChange={e=>{const f=e.target.files?.[0]||null; setImageFile(f); if(f) setPreviewUrl(URL.createObjectURL(f));}} className="border rounded-[10px] px-3 py-2 text-[13px] bg-white file:mr-3 file:rounded-full file:border-0 file:bg-[#00C2A8] file:text-white file:px-4 file:py-1 file:text-sm file:font-bold" style={{borderColor:BORDER}} /></label>
  {previewUrl ? <div className="h-36 rounded-[10px] overflow-hidden border" style={{borderColor:BORDER}}><img src={previewUrl} alt="preview" className="w-full h-full object-cover" /></div> : null}
- <div className="flex flex-col sm:flex-row gap-3"><Field label="City" value={city} onChange={setCity} /><Field label="Price ($)" value={price} onChange={setPrice} placeholder="0 for free" /></div>
+ <div className="flex flex-col sm:flex-row gap-3"><Field label="City" value={city} onChange={setCity} /><Field label="Price" value={price} onChange={setPrice} placeholder="0 for free" type="text" /><label className="grid gap-1 sm:w-[160px]"><span className="text-[10px] font-semibold text-[#6B7280]">Currency</span><select value={currency} onChange={(e)=>setCurrency(e.target.value)} className="border rounded-[10px] px-3 h-[42px] text-[13px] outline-none bg-[#F8FAFC] focus:bg-white font-semibold" style={{ borderColor: BORDER }}>{SUPPORTED_CURRENCIES.map((c)=> <option key={c.code} value={c.code}>{c.code} ({c.symbol})</option>)}</select></label></div>
  <div className="flex flex-col sm:flex-row gap-3"><Field label="Your name" value={sellerName} onChange={setSellerName} /><Field label="Your email" value={sellerEmail} onChange={setSellerEmail} /></div>
  <div className="rounded-xl border p-3 sm:p-4 bg-white grid gap-3" style={{borderColor:BORDER}}>
  <div className="flex items-center gap-2"><span className="w-7 h-7 rounded-full grid place-items-center text-white font-black text-xs" style={{background:TEAL}}>$</span><div><div className="text-[12px] font-black">Bank transfer</div><div className="text-[11px] text-[#6B7280]">Shown to buyer on preview.</div></div></div>

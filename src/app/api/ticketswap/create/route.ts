@@ -72,6 +72,7 @@ export async function POST(req: NextRequest) {
   }
   const priceRaw = get("price");
   const price = priceRaw ? Number(priceRaw.replace(/[^0-9.]/g, "")) : 0;
+  const currency = (get("currency") || "EUR").toUpperCase();
   const receipt_code = genReceipt();
   const payload: any = {
   receipt_code,
@@ -93,6 +94,7 @@ export async function POST(req: NextRequest) {
   seats: seats || [],
   image_url: image_url || null,
   price: isNaN(price) ? 0 : price,
+  currency,
   seller_name: get("seller_name") || authEmail || null,
   seller_email: get("seller_email") || authEmail || null,
   beneficiary_name: get("beneficiary_name") || null,

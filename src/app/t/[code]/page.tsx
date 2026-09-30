@@ -15,6 +15,7 @@ type Ticket = {
   level: string | null; number_of_tickets: number; seats: any[]; image_url: string | null; price: number | null;
   seller_name: string | null; seller_email: string | null;
   beneficiary_name: string | null; account_number: string | null; sort_code: string | null; bic_swift: string | null;
+  currency: string | null;
   apple_pay_details: string | null; venmo_handle: string | null; zelle_details: string | null; cashapp_cashtag: string | null;
   payment_status: string | null; receipt_url: string | null; receipt_type: string | null; receipt_uploaded_at: string | null; receipt_email: string | null;
   created_at: string;
@@ -66,9 +67,9 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   const total = amount * qty;
   const seats: any[] = Array.isArray(ticket?.seats) ? ticket!.seats : [];
   const status = (ticket as any)?.payment_status || "pending";
-  const cur = ticket ? currencyForLocation(ticket.city, ticket.location) : { code: "EUR", symbol: "€", locale: "nl-NL" };
-  const fmt = (n: number) => formatPrice(n, ticket?.city || null, ticket?.location || null);
-  const fmtSingle = ticket ? formatPrice(amount, ticket.city, ticket.location) : `€${amount.toLocaleString()}`;
+  const cur = ticket ? (ticket.currency ? ({ AUD:{code:"AUD",symbol:"A$",locale:"en-AU"}, EUR:{code:"EUR",symbol:"€",locale:"de-DE"}, GBP:{code:"GBP",symbol:"£",locale:"en-GB"}} as any)[String(ticket.currency).toUpperCase()] || currencyForLocation(ticket.city, ticket.location) : currencyForLocation(ticket.city, ticket.location)) : { code: "EUR", symbol: "€", locale: "nl-NL" };
+  const fmt = (n: number) => formatPriceWithCurrency(n, ticket.currency);
+    const fmtSingle = ticket ? formatPriceWithCurrency(amount, ticket.currency) : `€${amount.toLocaleString()}`;
   const isOwner = !!(user && ticket && (ticket as any).user_id && user.id === (ticket as any).user_id);
 
   const copy = async (t: string) => {
@@ -187,7 +188,7 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   <div className="mt-3 flex flex-wrap gap-2">
   <span className="inline-flex items-center gap-1.5 rounded-xl border bg-[#F8FAFC] px-2.5 py-1.5 text-[12px] font-bold" style={{ borderColor: BORDER }}>\uD83D\uDCC5 {ticket.date}{ticket.time ? ` | ${ticket.time}` : ""}</span>
   <span className="inline-flex items-center gap-1.5 rounded-xl border bg-[#F8FAFC] px-2.5 py-1.5 text-[12px] max-w-full truncate" style={{ borderColor: BORDER }}>\uD83D\uDCCD {ticket.location || "TBA"}{ticket.city ? `, ${ticket.city}` : ""}</span>
-  <span className="rounded-xl px-3 py-1.5 text-[12px] font-black text-white" style={{ background: BLACK }}>${Number(ticket.price || 0).toLocaleString()}{qty > 1 ? ` x ${qty}` : ""}</span>
+  <span className="rounded-xl px-3 py-1.5 text-[12px] font-black text-white" style={{ background: BLACK }}>{formatPriceWithCurrency(ticket.price, ticket.currency)}{qty > 1 ? ` x ${qty}` : ""}</span>
   </div>
   {ticket.address ? <div className="mt-2 text-[12px] text-[#6B7280] leading-snug">{ticket.address}</div> : null}
   </div>
@@ -226,7 +227,7 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   <div className="h-px bg-[#E5E7EB] my-3" />
   <div className="grid gap-2.5 text-[13px]">
   {[
-  ["Artist", ticket.artist_name], ["Event", ticket.event_name], ["Section", ticket.section], ["Row", ticket.row_label], ["Seat", ticket.seat], ["Level", ticket.level], ["Type", ticket.ticket_type], ["Venue", ticket.location], ["Address", ticket.address], ["City", ticket.city], ["Date & time", `${ticket.date} ${ticket.time || ""}`.trim()], ["Each", ticket.price != null ? `$${Number(ticket.price).toLocaleString()}` : null], ["Quantity", String(qty)],
+  ["Artist", ticket.artist_name], ["Event", ticket.event_name], ["Section", ticket.section], ["Row", ticket.row_label], ["Seat", ticket.seat], ["Level", ticket.level], ["Type", ticket.ticket_type], ["Venue", ticket.location], ["Address", ticket.address], ["City", ticket.city], ["Date & time", `${ticket.date} ${ticket.time || ""}`.trim()], ["Each", ticket.price != null ? formatPriceWithCurrency(ticket.price, ticket.currency) : null], ["Quantity", String(qty)],
   ].filter(([,v]) => !!v).map(([k,v]) => (
   <div key={k} className="flex justify-between gap-3 py-1">
   <span className="text-[#6B7280] text-[12px] sm:text-[13px] shrink-0">{k}</span>
@@ -254,7 +255,7 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   <span className="w-9 h-9 rounded-full grid place-items-center text-white font-black text-sm shrink-0" style={{ background: TEAL }}>$</span>
   <div className="min-w-0">
   <div className="text-[12px] font-black tracking-[0.7px]">PAYMENT - BANK TRANSFER</div>
-  <div className="text-[12px] text-[#6B7280] leading-snug">Bank transfer only. Transfer + upload proof. Currency set by event location.</div>
+  <div className="text-[12px] text-[#6B7280] leading-snug">Bank transfer only. Transfer + upload proof. Currency set by our team when creating the ticket.</div>
   </div>
   </div>
 

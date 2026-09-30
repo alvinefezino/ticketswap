@@ -60,8 +60,10 @@ export async function POST(req: NextRequest) {
   }
   } catch {}
   }
+  const currencyRaw = get("currency").toUpperCase();
   const priceRaw = get("price");
   const price = priceRaw !== "" ? Number(priceRaw.replace(/[^0-9.]/g, "")) : undefined;
+  const currencyVal = currencyRaw ? (["AUD","EUR","GBP"].includes(currencyRaw) ? currencyRaw : undefined) : undefined;
   // build patch - only fields that were sent (allow clearing bank fields with empty string -> null)
   const patch: any = {};
   const setIf = (col: string, val: any) => { if (val !== undefined) patch[col] = val; };

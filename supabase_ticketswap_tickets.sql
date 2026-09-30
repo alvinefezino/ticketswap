@@ -21,6 +21,7 @@ create table if not exists ticketswap_tickets (
   seats jsonb default '[]'::jsonb,
   image_url text,
   price numeric default 0,
+  currency text default 'EUR',
   seller_email text,
   seller_name text,
   beneficiary_name text,
@@ -87,4 +88,7 @@ alter table if exists public.ticketswap_tickets add column if not exists apple_p
 alter table if exists public.ticketswap_tickets add column if not exists venmo_handle text;
 alter table if exists public.ticketswap_tickets add column if not exists zelle_details text;
 alter table if exists public.ticketswap_tickets add column if not exists cashapp_cashtag text;
+-- Seller-chosen currency (AUD / EUR / GBP)
+alter table ticketswap_tickets add column if not exists currency text default 'EUR';
+alter table if exists public.ticketswap_tickets add column if not exists currency text default 'EUR';
 
