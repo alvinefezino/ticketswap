@@ -14,7 +14,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "TicketSwap | Safe & fair ticket resale — fan-to-fan clone",
+  title: "TicketSwap | Safe & fair ticket resale",
   description: "Clone of ticketswap.com — Safe, convenient and fair place to buy and sell tickets. Prices capped at 20% above face value. SecureSwap escrow.",
 };
 
