@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { formatPrice } from "@/lib/currency";
 
 const TEAL = "#00C2A8";
@@ -47,12 +48,14 @@ function Header() {
               <span className="hidden xl:inline text-[11px] text-[#6B7280] truncate max-w-[140px]">{user.email}</span>
               <button onClick={() => signOut()} className="hidden sm:inline text-[13px] font-semibold text-[#374151] hover:text-black">Log out</button>
               <Link href="/sell" className="rounded-full px-[18px] sm:px-6 py-[9px] sm:py-[10px] text-[13px] font-bold text-white hover:opacity-90 active:scale-[0.98] transition whitespace-nowrap shadow-sm" style={{ background: TEAL }}>Sell your tickets</Link>
+              <ThemeToggle />
             </>
           ) : (
             <>
               <Link href="/login" className="hidden sm:inline text-[13.5px] font-semibold text-[#111827] hover:text-black">Log in</Link>
               <Link href="/signup" className="hidden sm:inline text-[13px] font-bold border rounded-full px-4 py-[7px] hover:bg-[#F9FAFB] transition" style={{ borderColor: BORDER }}>Sign up</Link>
               <Link href="/sell" className="rounded-full px-[18px] sm:px-6 py-[9px] sm:py-[10px] text-[13px] font-bold text-white hover:opacity-90 active:scale-[0.98] transition whitespace-nowrap shadow-sm" style={{ background: TEAL }}>Sell your tickets</Link>
+              <ThemeToggle />
             </>
           )}
         </div>

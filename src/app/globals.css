@@ -37,3 +37,43 @@ input, button, select, textarea { font: inherit; }
 @media (max-width: 640px) {
   * { word-break: break-word; }
 }
+
+/* Dark mode — default for every device */
+html.dark { color-scheme: dark; }
+html.dark body { color: #F9FAFB; background: #0A0E14; }
+html.dark ::-webkit-scrollbar-thumb { background: #374151; }
+html.dark ::selection { background: rgba(0,194,168,0.3); }
+
+/* Dark mode overrides — make existing light markup dark automatically */
+html.dark .bg-white { background-color: #111827 !important; }
+html.dark .bg-\[\#F8FAFC\] { background-color: #1F2937 !important; }
+html.dark .bg-\[\#F5F7F9\] { background-color: #1F2937 !important; }
+html.dark .bg-\[\#F9FAFB\] { background-color: #1A2332 !important; }
+html.dark .bg-\[\#FFF1F2\] { background-color: #311C1E !important; }
+html.dark .bg-\[\#F0FDFB\] { background-color: #13211F !important; }
+html.dark .bg-\[\#FFFBEB\] { background-color: #2A2210 !important; }
+html.dark .bg-\[\#F3F4F6\] { background-color: #1F2937 !important; }
+html.dark .bg-\[\#ECFDF5\] { background-color: #0F2A20 !important; }
+html.dark .bg-\[\#FEF3C7\] { background-color: #2A230F !important; }
+html.dark .bg-\[\#FCFEFE\] { background-color: #0F1A19 !important; }
+
+html.dark .text-\[\#0A0E14\] { color: #F9FAFB !important; }
+html.dark .text-\[\#111827\] { color: #F9FAFB !important; }
+html.dark .text-\[\#1F2937\] { color: #E5E7EB !important; }
+html.dark .text-\[\#374151\] { color: #D1D5DB !important; }
+html.dark .text-\[\#4B5563\] { color: #9CA3AF !important; }
+html.dark .text-\[\#6B7280\] { color: #9CA3AF !important; }
+html.dark .text-\[\#9CA3AF\] { color: #6B7280 !important; }
+html.dark .text-\[\#065F46\] { color: #6EE7B7 !important; }
+html.dark .text-\[\#0F766E\] { color: #5EE9D1 !important; }
+html.dark .text-\[\#78350F\] { color: #FDE68A !important; }
+html.dark .text-\[\#7F1D1D\] { color: #FECACA !important; }
+html.dark .text-\[\#92400E\] { color: #FDE68A !important; }
+
+html.dark .border { border-color: #2A3441 !important; }
+html.dark .border-\[\#E5E7EB\] { border-color: #2A3441 !important; }
+html.dark input, html.dark textarea, html.dark select { background-color: #1F2937 !important; color: #F9FAFB !important; border-color: #2A3441 !important; }
+html.dark input::placeholder { color: #6B7280 !important; }
+html.dark input:focus { background-color: #111827 !important; border-color: #00C2A8 !important; }
+html.dark .shadow-\[0_8px_32px_rgba\(0\,0\,0\,0\.08\)\] { box-shadow: 0 8px 32px rgba(0,0,0,0.35) !important; }
+
