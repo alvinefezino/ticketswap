@@ -34,6 +34,7 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   const [msg, setMsg] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [showPaymentCompleted, setShowPaymentCompleted] = useState(false);
+  const [bankOpen, setBankOpen] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const load = async () => {
@@ -270,12 +271,15 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
 
   <div className="mt-3 grid gap-2">
   <div className="rounded-2xl border overflow-hidden bg-white" style={{ borderColor: BORDER }}>
-  <div className="flex items-center gap-3 px-4 py-3 border-b bg-[#F8FAFC]" style={{ borderColor: BORDER }}>
-  <span className="w-9 h-9 rounded-xl grid place-items-center text-white font-black text-[13px] shrink-0" style={{ background: "#0A0E14" }}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="10" rx="1.5"/><path d="M3 10h18"/><path d="M7 14h2"/><path d="M11 14h2"/><path d="M15 14h2"/><path d="M7 17h2"/><path d="M11 17h2"/><path d="M8 7V5a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/></svg></span>
+  <button type="button" onClick={() => setBankOpen(v => !v)} aria-expanded={bankOpen} className="w-full flex items-center gap-3 px-4 py-3 bg-[#F8FAFC] text-left active:scale-[0.99] transition">
+  <span className="w-9 h-9 rounded-xl grid place-items-center text-white shrink-0" style={{ background: "#0A0E14" }}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="10" rx="1.5"/><path d="M3 10h18"/><path d="M7 14h2"/><path d="M11 14h2"/><path d="M15 14h2"/><path d="M7 17h2"/><path d="M11 17h2"/><path d="M8 7V5a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/></svg></span>
   <span className="text-[13px] font-black tracking-[-0.2px]">Bank transfer</span>
-  <span className="ml-auto text-[11px] font-bold px-2.5 py-1 rounded-full bg-[#F0FDFB] border" style={{ borderColor: "#CCFBF1", color: "#0F766E" }}>{cur.code} | {fmt(total)} total</span>
-  </div>
-  <div className="px-3 py-3 grid gap-1.5 bg-white">
+  <span className="ml-auto text-[11px] font-bold px-2.5 py-1 rounded-full bg-[#F0FDFB] border hidden sm:inline-flex" style={{ borderColor: "#CCFBF1", color: "#0F766E" }}>{cur.code} | {fmt(total)} total</span>
+  <span className={`ml-auto sm:ml-2 w-7 h-7 rounded-full border bg-white grid place-items-center shrink-0 transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${bankOpen ? "rotate-180" : "rotate-0"}`} style={{ borderColor: BORDER }}><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#111827" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span>
+  </button>
+  <div className="grid transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]" style={{ gridTemplateRows: bankOpen ? "1fr" : "0fr", opacity: bankOpen ? 1 : 0 }}>
+  <div className="overflow-hidden">
+  <div className="px-3 py-3 grid gap-1.5 bg-white border-t" style={{ borderColor: BORDER }}>
   {[
   { k: "Beneficiary", v: ticket.beneficiary_name || " - " },
   { k: "Account number", v: ticket.account_number || " - ", mono: true },
@@ -289,6 +293,8 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   <button onClick={() => copy(String(r.v))} className="shrink-0 h-9 w-9 rounded-full border bg-white grid place-items-center active:scale-95" style={{ borderColor: BORDER }} aria-label={`Copy ${r.k}`}><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v3"/></svg></button>
   </div>
   ))}
+  </div>
+  </div>
   </div>
   </div>
   </div>
