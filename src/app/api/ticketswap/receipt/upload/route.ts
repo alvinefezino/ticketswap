@@ -15,6 +15,7 @@ export async function POST(req: NextRequest) {
   try { form = await req.formData(); } catch { return NextResponse.json({ error: "Send FormData with receipt_code + file" }, { status: 400 }); }
   const get = (k: string) => String(form.get(k) || "").trim();
   const receipt_code = get("receipt_code").toUpperCase();
+  const name = get("buyer_name") || null;
   const email = get("email") || get("receipt_email") || null;
   if (!receipt_code) return NextResponse.json({ error: "receipt_code required" }, { status: 400 });
 
@@ -56,6 +57,7 @@ export async function POST(req: NextRequest) {
   receipt_type: isPdf ? "pdf" : "image",
   receipt_uploaded_at: new Date().toISOString(),
   receipt_email: email,
+  buyer_full_name: name,
   };
   const { error: updErr } = await supa.from("ticketswap_tickets").update(patch).eq("receipt_code", receipt_code);
   if (updErr) {

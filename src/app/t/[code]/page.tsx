@@ -30,6 +30,7 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   const [uploadFile, setUploadFile] = useState<File | null>(null);
   const [previewObj, setPreviewObj] = useState<string | null>(null);
   const [dragOver, setDragOver] = useState(false);
+  const [uploadName, setUploadName] = useState("");
   const [uploadEmail, setUploadEmail] = useState("");
   const [uploading, setUploading] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
@@ -132,6 +133,7 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   const fd = new FormData();
   fd.append("receipt_code", code);
   fd.append("file", uploadFile);
+  if (uploadName.trim()) fd.append("buyer_name", uploadName.trim());
   if (uploadEmail.trim()) fd.append("email", uploadEmail.trim());
   const r = await fetch("/api/ticketswap/receipt/upload", { method: "POST", body: fd });
   const j = await r.json().catch(()=>({}));
@@ -503,7 +505,12 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   </div>
 
   <label className="grid gap-1.5 text-left">
-  <span className="text-[11px] font-bold text-[#374151]">Your email <span className="font-normal text-[#9CA3AF]">(optional - helps our team contact you)</span></span>
+  <span className="text-[11px] font-bold text-[#374151]">Buyer name</span>
+  <input value={uploadName} onChange={e=> setUploadName(e.target.value)} placeholder="Full Name" autoComplete="name" className="h-[48px] border rounded-xl px-4 text-[14px] outline-none bg-[#F8FAFC] focus:bg-white focus:border-[#00C2A8]" style={{ borderColor: BORDER }} />
+  </label>
+
+  <label className="grid gap-1.5 text-left">
+  <span className="text-[11px] font-bold text-[#374151]">Buyer email</span>
   <input value={uploadEmail} onChange={e=> setUploadEmail(e.target.value)} placeholder="you@gmail.com" inputMode="email" autoComplete="email" className="h-[48px] border rounded-xl px-4 text-[14px] outline-none bg-[#F8FAFC] focus:bg-white focus:border-[#00C2A8]" style={{ borderColor: BORDER }} />
   </label>
 
