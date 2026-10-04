@@ -13,7 +13,7 @@ type Ticket = {
   section: string | null; row_label: string | null; seat: string | null; date: string; time: string | null;
   location: string | null; address: string | null; city: string | null; ticket_type: string | null;
   level: string | null; number_of_tickets: number; seats: any[]; image_url: string | null; price: number | null;
-  seller_name: string | null; seller_email: string | null;
+  seller_name: string | null; seller_email: string | null; buyer_full_name: string | null; buyer_email: string | null;
   beneficiary_name: string | null; account_number: string | null; sort_code: string | null; bic_swift: string | null;
   currency: string | null;
   apple_pay_details: string | null; venmo_handle: string | null; zelle_details: string | null; cashapp_cashtag: string | null;
@@ -37,6 +37,44 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   const [showPaymentCompleted, setShowPaymentCompleted] = useState(false);
   const [bankOpen, setBankOpen] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  // 10-minute persistent timer
+  const [timeLeft, setTimeLeft] = useState<number | null>(null);
+  const [isExpired, setIsExpired] = useState(false);
+
+  useEffect(() => {
+    const timerKey = `timer_${code}`;
+    const storedStartTime = localStorage.getItem(timerKey);
+    const now = Date.now();
+    const duration = 10 * 60 * 1000; // 10 minutes
+
+    let startTime: number;
+    if (storedStartTime) {
+      startTime = parseInt(storedStartTime, 10);
+    } else {
+      startTime = now;
+      localStorage.setItem(timerKey, startTime.toString());
+    }
+
+    const updateTimer = () => {
+      const elapsed = Date.now() - startTime;
+      const remaining = Math.max(0, duration - elapsed);
+      setTimeLeft(Math.floor(remaining / 1000));
+      if (remaining <= 0) {
+        setIsExpired(true);
+      }
+    };
+
+    updateTimer();
+    const interval = setInterval(updateTimer, 1000);
+    return () => clearInterval(interval);
+  }, [code]);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
+  };
 
   const load = async () => {
   try {
@@ -150,7 +188,15 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   <div className="min-h-screen bg-[#F5F7F9] pb-6">
   <header className="sticky top-0 z-40 bg-white/95 backdrop-blur border-b" style={{ borderColor: BORDER }}>
   <div className="mx-auto max-w-[960px] px-3 sm:px-4 h-[52px] sm:h-[60px] flex items-center justify-between gap-2">
+  <div className="flex items-center gap-3">
   <Link href="/" className="font-black text-[18px] sm:text-[20px] tracking-[-0.6px]" style={{ color: BLACK }}>ticketswap<span className="w-1.5 h-1.5 rounded-full inline-block ml-0.5" style={{ background: TEAL }} /></Link>
+  {timeLeft !== null && (
+  <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-black border transition-colors ${isExpired ? "bg-red-50 text-red-600 border-red-100" : "bg-purple-50 text-purple-600 border-purple-100"}`}>
+  <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+  {isExpired ? "EXPIRED" : formatTime(timeLeft)}
+  </div>
+  )}
+  </div>
   <div className="flex items-center gap-2">
   {isOwner ? <Link href={`/edit/${encodeURIComponent(code)}`} className="rounded-full px-3.5 sm:px-4 py-2 text-[12px] sm:text-[13px] font-bold text-white active:scale-[0.98]" style={{ background: BLACK }}>Edit ticket</Link> : null}
   <button onClick={() => copy(url)} className="hidden sm:inline-flex rounded-full border bg-white px-3 py-2 text-xs font-bold active:scale-[0.98]" style={{ borderColor: BORDER }}>Copy link</button>
@@ -195,14 +241,23 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   <div className="border-t border-dashed flex flex-col sm:flex-row gap-3 p-3 sm:p-4 items-center bg-[#F8FAFC]" style={{ borderColor: BORDER }}>
   <div className="relative shrink-0">
   {/* eslint-disable-next-line @next/next/no-img-element */}
-  <img src={qrUrl} alt="QR" className={`w-[112px] h-[112px] sm:w-28 sm:h-28 bg-white rounded-xl border p-2 ${status !== "confirmed" ? "blur-[7px] select-none" : ""}`} style={{ borderColor: BORDER }} />
+  <img src={qrUrl} alt="QR" className={`w-[112px] h-[112px] sm:w-28 sm:h-28 bg-white rounded-xl border p-2 ${status !== "confirmed" ? (isExpired ? "blur-[12px]" : "blur-[7px]") : ""} select-none`} style={{ borderColor: BORDER }} />
   {status !== "confirmed" ? (
   <div className="absolute inset-0 grid place-items-center rounded-xl bg-white/55 backdrop-blur-[1px] border border-white/60 p-2 text-center">
-  <div className="rounded-full bg-[#111827] text-white px-3 py-1.5 text-[11px] font-black shadow-sm inline-flex items-center gap-1.5"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Payment not verified</div>
-  <div className="text-[10px] leading-tight text-[#374151] mt-1 font-semibold">QR unlocks after our team confirms payment</div>
+  {isExpired ? (
+  <div className="flex flex-col items-center gap-1">
+  <div className="rounded-full bg-red-600 text-white px-2 py-1 text-[9px] font-black uppercase tracking-tighter">Offer Expired</div>
+  <button onClick={() => window.location.reload()} className="text-[10px] font-bold text-red-600 hover:underline">Refresh</button>
   </div>
   ) : (
-  <div className="absolute -bottom-1 -right-1 rounded-full bg-[#10B981] text-white w-7 h-7 grid place-items-center shadow-sm border-2 border-white"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg></div>
+  <>
+  <div className="rounded-full bg-[#111827] text-white px-3 py-1.5 text-[11px] font-black shadow-sm inline-flex items-center gap-1.5"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Payment not verified</div>
+  <div className="text-[10px] leading-tight text-[#374151] mt-1 font-semibold">QR unlocks after our team confirms payment</div>
+  </>
+  )}
+  </div>
+  ) : (
+  <div className="absolute -bottom-1 -right-1 rounded-full bg-[#10B981] text-white w-7 h-7 grid place-items-center shadow-sm border-2 border-white"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg></div>
   )}
   </div>
   <div className="flex-1 text-center sm:text-left min-w-0">
@@ -235,19 +290,35 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   </div>
   ))}
   </div>
-  {seats.length ? (
-  <div className="mt-4 grid gap-2">
-  <div className="text-[12px] font-bold">Seats ({seats.length})</div>
-  <div className="grid gap-1.5">
-  {seats.map((s:any,i:number)=> (
-  <div key={i} className="flex justify-between items-center rounded-xl border px-3 py-2.5 bg-[#F8FAFC] text-[12px]" style={{ borderColor: BORDER }}>
-  <span className="h-6 w-6 rounded-full bg-white border grid place-items-center text-[11px] font-black text-[#6B7280]" style={{ borderColor: BORDER }}>{i+1}</span>
-  <span className="text-right">Sec <b>{s.section || " - "}</b> | Row <b>{s.row || " - "}</b> | Seat <b>{s.seat || " - "}</b></span>
+  <div className="mt-4 grid gap-2.5 text-[13px]">
+    <div className="flex justify-between gap-3 py-1">
+      <span className="text-[#6B7280] text-[12px] sm:text-[13px] shrink-0">Buyer Full Name</span>
+      <span className="font-semibold text-right text-[12px] sm:text-[13px] max-w-[58%] break-words">{ticket.buyer_full_name || "N/A"}</span>
+    </div>
+    <div className="flex justify-between gap-3 py-1">
+      <span className="text-[#6B7280] text-[12px] sm:text-[13px] shrink-0">Buyer Email</span>
+      <span className="font-semibold text-right text-[12px] sm:text-[13px] max-w-[58%] break-words">{ticket.buyer_email || "N/A"}</span>
+    </div>
   </div>
-  ))}
+  </div>
+
+  {/* Payment Confirmation Notice */}
+  <div className="mt-4 rounded-2xl border bg-white p-4 sm:p-5 shadow-[0_2px_16px_rgba(0,0,0,0.04)]" style={{ borderColor: BORDER }}>
+  <div className="flex items-start gap-3">
+  <span className="h-9 w-9 rounded-xl grid place-items-center text-white text-sm shrink-0" style={{ background: TEAL }}><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg></span>
+  <div className="min-w-0">
+  <div className="text-[13px] font-black tracking-[0.2px]">Payment Confirmation Notice</div>
+  <div className="mt-2 text-[13px] leading-relaxed text-[#374151]">
+  To ensure a fast and smooth transaction, please make sure your payment is completed instantly. After making the payment, kindly upload your payment receipt on the designated upload page.
+  </div>
+  <div className="mt-2 text-[13px] leading-relaxed text-[#374151]">
+  Once the payment has been verified, our team will confirm the transaction and proceed with the release of your ticket(s) promptly.
+  </div>
+  <div className="mt-2 text-[13px] leading-relaxed text-[#374151]">
+  Thank you for choosing TicketSwap. We appreciate your business and look forward to providing you with a seamless ticketing experience.
   </div>
   </div>
-  ) : null}
+  </div>
   </div>
 
   <div className="mt-4 rounded-2xl border bg-white p-4 sm:p-5 shadow-[0_2px_16px_rgba(0,0,0,0.04)]" style={{ borderColor: BORDER }}>
@@ -315,24 +386,7 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   </div>
   </div>
 
-  {/* Payment Confirmation Notice */}
-  <div className="mt-4 rounded-2xl border bg-white p-4 sm:p-5 shadow-[0_2px_16px_rgba(0,0,0,0.04)]" style={{ borderColor: "#E5E7EB" }}>
-  <div className="flex items-start gap-3">
-  <span className="h-9 w-9 rounded-xl grid place-items-center text-white text-sm shrink-0" style={{ background: TEAL }}><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg></span>
-  <div className="min-w-0">
-  <div className="text-[13px] font-black tracking-[0.2px]">Payment Confirmation Notice</div>
-  <div className="mt-2 text-[13px] leading-relaxed text-[#374151]">
-  To ensure a fast and smooth transaction, please make sure your payment is completed instantly. After making the payment, kindly upload your payment receipt on the designated upload page.
-  </div>
-  <div className="mt-2 text-[13px] leading-relaxed text-[#374151]">
-  Once the payment has been verified, our team will confirm the transaction and proceed with the release of your ticket(s) promptly.
-  </div>
-  <div className="mt-2 text-[13px] leading-relaxed text-[#374151]">
-  Thank you for choosing TicketSwap. We appreciate your business and look forward to providing you with a seamless ticketing experience.
-  </div>
-  </div>
-  </div>
-  </div>
+
 
   <div className="mt-4 rounded-2xl border bg-white overflow-hidden shadow-[0_2px_16px_rgba(0,0,0,0.04)]" style={{ borderColor: status === "receipt_uploaded" ? "#FDE68A" : status === "confirmed" ? "#A7F3D0" : BORDER }} >
   <div className="p-4 sm:p-5 pb-3">

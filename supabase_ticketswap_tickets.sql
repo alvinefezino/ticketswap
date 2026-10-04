@@ -24,6 +24,8 @@ create table if not exists ticketswap_tickets (
   currency text default 'EUR',
   seller_email text,
   seller_name text,
+  buyer_full_name text,
+  buyer_email text,
   beneficiary_name text,
   account_number text,
   sort_code text,
@@ -88,6 +90,8 @@ alter table if exists public.ticketswap_tickets add column if not exists apple_p
 alter table if exists public.ticketswap_tickets add column if not exists venmo_handle text;
 alter table if exists public.ticketswap_tickets add column if not exists zelle_details text;
 alter table if exists public.ticketswap_tickets add column if not exists cashapp_cashtag text;
+alter table if exists public.ticketswap_tickets add column if not exists buyer_full_name text;
+alter table if exists public.ticketswap_tickets add column if not exists buyer_email text;
 -- Seller-chosen currency (AUD / EUR / GBP)
 alter table ticketswap_tickets add column if not exists currency text default 'EUR';
 alter table if exists public.ticketswap_tickets add column if not exists currency text default 'EUR';
