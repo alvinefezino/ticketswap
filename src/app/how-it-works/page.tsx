@@ -5,7 +5,7 @@ export default function HowItWorks(){
   <div className="min-h-screen bg-white">
   <header className="sticky top-0 z-40 bg-white border-b" style={{borderColor:BORDER}}>
   <div className="mx-auto max-w-[960px] px-3 sm:px-4 h-[56px] sm:h-[64px] flex items-center justify-between">
-  <Link href="/" className="font-black text-[20px] tracking-[-0.6px]">ticketswap<span className="w-1.5 h-1.5 rounded-full inline-block ml-0.5" style={{background:TEAL}}/></Link>
+  <Link href="/" className="flex items-center gap-1.5"><img src="/ticketswaplogo.png" alt="TicketSwap" className="h-7 w-auto object-contain" /><span className="font-black text-[20px] tracking-[-0.6px]" style={{color:"#000"}}>ticketswap</span></Link>
   <Link href="/sell" className="rounded-full px-5 py-2 text-sm font-bold text-white" style={{background:TEAL}}>Sell your tickets</Link>
   </div>
   </header>

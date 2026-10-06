@@ -31,8 +31,9 @@ export default function LoginPage() {
   <div className="min-h-screen bg-white">
   <header className="sticky top-0 z-40 bg-white border-b" style={{ borderColor: BORDER }}>
   <div className="mx-auto max-w-[960px] px-3 sm:px-4 h-[56px] sm:h-[64px] flex items-center justify-between">
-  <Link href="/" className="font-black text-[20px] tracking-[-0.6px]" style={{ color: BLACK }}>
-  ticketswap<span className="w-1.5 h-1.5 rounded-full inline-block ml-0.5" style={{ background: TEAL }} />
+  <Link href="/" className="flex items-center gap-1.5">
+  <img src="/ticketswaplogo.png" alt="TicketSwap" className="h-7 w-auto object-contain" />
+  <span className="font-black text-[20px] tracking-[-0.6px]" style={{ color: "#000" }}>ticketswap</span>
   </Link>
   <Link href="/" className="text-[13px] font-bold hover:underline">Back to discover</Link>
   </div>

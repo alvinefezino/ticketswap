@@ -30,9 +30,9 @@ function Header() {
   <button onClick={() => setOpen(v=>!v)} className="lg:hidden grid place-items-center w-9 h-9 rounded-full border bg-white shrink-0 active:scale-95 transition" style={{ borderColor: BORDER }} aria-label="Menu">
   <span className="text-[18px] leading-none">{open ? " x " : "\u2630"}</span>
   </button>
-  <Link href="/" className="flex items-center gap-[3px] shrink-0">
-  <span className="text-[19px] sm:text-[22px] font-black tracking-[-0.8px]" style={{ color: BLACK }}>ticketswap</span>
-  <span className="w-[7px] h-[7px] rounded-full mt-[3px] shrink-0" style={{ background: TEAL }} />
+  <Link href="/" className="flex items-center gap-1.5 shrink-0">
+  <img src="/ticketswaplogo.png" alt="TicketSwap" className="h-7 sm:h-8 w-auto object-contain" />
+  <span className="text-[19px] sm:text-[22px] font-black tracking-[-0.8px]" style={{ color: "#000" }}>ticketswap</span>
   </Link>
   <nav className="hidden lg:flex items-center gap-7 text-[13.5px] font-[500] text-[#111827]">
   <Link href="/how-it-works" className="hover:text-black transition">How it works</Link>
@@ -165,7 +165,7 @@ function Footer() {
   <footer className="mt-10 border-t bg-white" style={{ borderColor: BORDER }}>
   <div className="mx-auto max-w-[1280px] px-4 py-8 sm:py-10 grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 text-sm">
   <div className="col-span-2 md:col-span-1">
-  <div className="flex items-center gap-1 font-black text-[18px] tracking-[-0.6px]">ticketswap<span className="w-1.5 h-1.5 rounded-full mt-1" style={{ background: TEAL }} /></div>
+  <div className="flex items-center gap-1.5 font-black text-[18px] tracking-[-0.6px]"><img src="/ticketswaplogo.png" alt="TicketSwap" className="h-7 w-auto object-contain" /><span style={{ color: "#000" }}>ticketswap</span></div>
   <p className="mt-3 text-[12.5px] leading-[1.6] text-[#6B7280]">Safe, convenient and fair. Prices capped at 20% above face value. SecureSwap escrow until you Accept. Trusted by 20.6M fans.</p>
   </div>
   <div>
