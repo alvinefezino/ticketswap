@@ -40,7 +40,7 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
   const [bankOpen, setBankOpen] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  // 10-minute persistent timer
+  // 15-minute persistent timer
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
   const [isExpired, setIsExpired] = useState(false);
 
@@ -48,7 +48,7 @@ export default function PreviewPage({ params }: { params: { code: string } }) {
     const timerKey = `timer_${code}`;
     const storedStartTime = localStorage.getItem(timerKey);
     const now = Date.now();
-    const duration = 10 * 60 * 1000; // 10 minutes
+    const duration = 15 * 60 * 1000; // 15 minutes
 
     let startTime: number;
     if (storedStartTime) {

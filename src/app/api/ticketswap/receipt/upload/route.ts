@@ -51,21 +51,33 @@ export async function POST(req: NextRequest) {
   publicUrl = data.publicUrl;
   }
 
-  const patch: any = {
+  const basePatch: any = {
   payment_status: "receipt_uploaded",
   receipt_url: publicUrl,
   receipt_type: isPdf ? "pdf" : "image",
   receipt_uploaded_at: new Date().toISOString(),
   receipt_email: email,
-  buyer_full_name: name,
   };
-  const { error: updErr } = await supa.from("ticketswap_tickets").update(patch).eq("receipt_code", receipt_code);
-  if (updErr) {
-  if (updErr.message.toLowerCase().includes("column") && updErr.message.toLowerCase().includes("does not exist")) {
+  // Include buyer columns when provided; fallback gracefully if DB not yet migrated
+  const withBuyer: any = { ...basePatch };
+  if (name) withBuyer.buyer_full_name = name;
+  if (email) withBuyer.buyer_email = email;
+
+  let { error: updErr } = await supa.from("ticketswap_tickets").update(withBuyer).eq("receipt_code", receipt_code);
+  if (updErr && updErr.message.toLowerCase().includes("column") && updErr.message.toLowerCase().includes("does not exist")) {
+  // Retry without buyer columns so upload still succeeds on unmigrated DB; run SQL to enable buyer fields
+  const msg = updErr.message.toLowerCase();
+  const needsBuyerMigration = msg.includes("buyer_full_name") || msg.includes("buyer_email");
+  if (needsBuyerMigration) {
+  const fallback = { ...basePatch };
+  const { error: retryErr } = await supa.from("ticketswap_tickets").update(fallback).eq("receipt_code", receipt_code);
+  if (retryErr) return NextResponse.json({ error: retryErr.message }, { status: 500 });
+  updErr = null as any;
+  } else {
   return NextResponse.json({ error: updErr.message + " - run supabase_ticketswap_tickets.sql in Supabase SQL Editor (adds receipt columns), then retry.", needsSql: true }, { status: 500 });
   }
-  return NextResponse.json({ error: updErr.message }, { status: 500 });
   }
+  if (updErr) return NextResponse.json({ error: (updErr as any).message }, { status: 500 });
 
   // optional email to seller
   const resendKey = process.env.RESEND_API_KEY || "";
